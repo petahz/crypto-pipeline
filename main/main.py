@@ -3,7 +3,7 @@ from producers.kraken_producer import Producer
 
 
 if __name__ == '__main__':
-    asset_pairs = ['XBTUSD', 'ETHUSD', 'LTCUSD']
+    asset_pairs = ['XXBTZUSD', 'XETHZUSD', 'XLTCZUSD']
 
     for asset_pair in asset_pairs:
         producer = Producer(asset_pair)

@@ -17,10 +17,17 @@ class Producer:
             'since': self.since_time
         })
 
-        # Set the since parameter for where in time to get the next batch of stream data from the REST API
-        self.since_time = response['last']
+        if len(response['error']) > 0:
+            for e in response['error']:
+                print('Error: ', e)
+        else:
+            result = response['result']
 
-        topic = client.topics['{}_{}'.format(self.asset_pair, method)]
+            # Set the since parameter for where in time to get the next batch of stream data from the REST API
+            self.since_time = result['last']
 
-        with topic.get_producer(delivery_reports=False) as producer:
-            producer.produce(response)
+            topic = client.topics['{}_{}'.format(self.asset_pair, method)]
+
+            with topic.get_producer(delivery_reports=False) as producer:
+                message = result[self.asset_pair]
+                producer.produce(message)
