@@ -4,7 +4,7 @@ from pykafka import KafkaClient
 
 
 api = API()
-client = KafkaClient(hosts="ec2-52-44-121-53.compute-1.amazonaws.com:9092")
+client = KafkaClient(hosts="localhost:9092")
 
 
 class Producer:

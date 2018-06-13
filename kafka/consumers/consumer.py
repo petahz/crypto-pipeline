@@ -1,3 +1,4 @@
+import json
 from pykafka import KafkaClient
 
 
@@ -15,4 +16,4 @@ class Consumer:
 
         for message in consumer:
             if message is not None:
-                print(message.offset, message.value)
+                print(message.offset, json.loads(message.value.decode()))
