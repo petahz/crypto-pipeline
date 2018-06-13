@@ -26,7 +26,7 @@ class Producer:
             # Set the since parameter for where in time to get the next batch of stream data from the REST API
             self.since_time = result['last']
 
-            topic = client.topics['{}_{}'.format(self.asset_pair, method)]
+            topic = client.topics[b'{}_{}'.format(self.asset_pair, method)]
 
             with topic.get_producer(delivery_reports=False) as producer:
                 message = result[self.asset_pair]
