@@ -1,4 +1,5 @@
 from krakenex import API
+import json
 from pykafka import KafkaClient
 
 
@@ -30,5 +31,5 @@ class Producer:
             topic = client.topics[topic_name.encode()]
 
             with topic.get_producer(delivery_reports=False) as producer:
-                message = result[self.asset_pair]
-                producer.produce(message)
+                message = json.dumps(result[self.asset_pair])
+                producer.produce(message.encode())
