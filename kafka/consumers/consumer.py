@@ -9,7 +9,8 @@ class Consumer:
         self.asset_pair = asset_pair
 
     def consume(self, method):
-        topic = client.topics[b'{}_{}'.format(self.asset_pair, method)]
+        topic_name = '{}_{}'.format(self.asset_pair, method)
+        topic = client.topics[topic_name.encode()]
         consumer = topic.get_simple_consumer()
 
         for message in consumer:
