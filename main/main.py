@@ -1,6 +1,7 @@
 from consumers.consumer import Consumer
 from producers.kraken_producer import Producer
 
+
 if __name__ == '__main__':
     asset_pairs = ['XBTUSD', 'ETHUSD', 'LTCUSD']
 
