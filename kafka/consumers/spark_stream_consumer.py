@@ -1,4 +1,4 @@
-from ..config.config import KAFKA_NODES
+from config.config import KAFKA_NODES
 
 import json
 
