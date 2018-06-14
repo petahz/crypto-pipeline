@@ -13,7 +13,7 @@ class SparkStreamConsumer:
     def __init__(self, topic_name):
         self.topic_name = topic_name
 
-        self.sc = SparkContext('localhost:9092', self.spark_context)
+        self.sc = SparkContext('localhost:7077', self.spark_context)
         self.ssc = StreamingContext(self.sc, 5)
 
         self.kvs = KafkaUtils.createDirectStream(self.ssc, [self.topic_name.encode()],
