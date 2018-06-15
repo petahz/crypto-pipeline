@@ -37,7 +37,6 @@ class AverageSpreadConsumer(SparkStreamConsumer):
         spreads_dstream = parsed.map(lambda tx: [tx[0], tx[2] - tx[1]])
         spreads_dstream.pprint()
 
-        self.ssc.start()
-        self.ssc.awaitTermination()
+        print('sparkkkk: ', spreads_dstream)
 
-        #super().consume()
+        super().consume()
