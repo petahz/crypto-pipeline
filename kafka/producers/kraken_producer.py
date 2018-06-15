@@ -29,11 +29,11 @@ class Producer:
             self.since_time = result['last']
 
             topic_name = '{}_{}'.format(self.asset_pair, self.api_method)
-            topic = client.topics[topic_name.encode()]
+            topic = client.topics[topic_name]
 
             with topic.get_producer(delivery_reports=False) as producer:
                 messages = json.dumps(result[self.asset_pair])
                 for message in messages:
-                    producer.produce(message.encode())
+                    producer.produce(message)
 
         return topic_name
