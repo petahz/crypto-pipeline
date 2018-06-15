@@ -1,5 +1,4 @@
-from consumers.spark_stream_consumer import AverageSpreadConsumer
-from producers.kraken_producer import Producer
+from ..kafka.consumers.spark_stream_consumer import AverageSpreadConsumer
 
 
 if __name__ == '__main__':
@@ -9,8 +8,7 @@ if __name__ == '__main__':
 
     for asset_pair in asset_pairs:
         for method in methods:
-            producer = Producer(asset_pair, method)
-            topic_name = producer.produce()
+            topic_name = '{}_{}'.format(asset_pair, method)
 
             consumer = AverageSpreadConsumer(topic_name)
             consumer.consume()
