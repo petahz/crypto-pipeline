@@ -1,3 +1,4 @@
+import time
 from producers.kraken_producer import Producer
 
 
@@ -12,5 +13,6 @@ if __name__ == '__main__':
             producers.append(Producer(asset_pair, method))
 
     while True:
+        time.sleep(2)
         for producer in producers:
             producer.produce()
