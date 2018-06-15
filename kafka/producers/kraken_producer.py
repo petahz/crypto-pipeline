@@ -1,6 +1,7 @@
 from krakenex import API
 import json
 from pykafka import KafkaClient
+from pykafka.utils import serialize_utf8
 
 
 api = API()
@@ -31,7 +32,7 @@ class Producer:
             topic_name = '{}_{}'.format(self.asset_pair, self.api_method)
             topic = client.topics[topic_name]
 
-            with topic.get_producer(delivery_reports=False) as producer:
+            with topic.get_producer(delivery_reports=False, serializer=serialize_utf8) as producer:
                 messages = json.dumps(result[self.asset_pair])
                 for message in messages:
                     producer.produce(message)
