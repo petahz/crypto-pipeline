@@ -18,7 +18,7 @@ class SparkStreamConsumer:
         self.ssc = StreamingContext(self.sc, 5)
 
         self.kvs = KafkaUtils.createDirectStream(self.ssc, [self.topic_name.encode()],
-                                                 {'metadata.broker.list': KAFKA_NODES})
+                                                 {'metadata.broker.list': ','.join(KAFKA_NODES)})
 
     def consume(self):
         self.ssc.start()
