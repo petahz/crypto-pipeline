@@ -9,7 +9,7 @@ if __name__ == '__main__':
 
     for asset_pair in asset_pairs:
         for method in methods:
-            producers.push(Producer(asset_pair, method))
+            producers.append(Producer(asset_pair, method))
 
     while True:
         for producer in producers:
