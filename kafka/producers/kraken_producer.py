@@ -36,6 +36,6 @@ class Producer:
                 messages = result[self.asset_pair]
                 for message in messages:
                     producer.produce(json.dumps(message))
-                    print('topic_name: ', message)
+                    print(topic_name, ':', message)
 
         return topic_name
