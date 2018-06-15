@@ -34,7 +34,7 @@ class AverageSpreadConsumer(SparkStreamConsumer):
     def consume(self):
         # messages come in [timestamp, bid, ask] format, a spread is calculated by (ask-bid)
         parsed = self.kvs.map(lambda v: json.loads(v[1]))
-        spreads_dstream = parsed.map(lambda tx: [tx[0], tx[2] - tx[1]])
+        spreads_dstream = parsed.map(lambda tx: [tx[0], int(tx[2]) - int(tx[1])])
         spreads_dstream.pprint()
 
         print('sparkkkk: ', spreads_dstream)
