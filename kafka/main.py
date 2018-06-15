@@ -10,6 +10,3 @@ if __name__ == '__main__':
         for method in methods:
             producer = Producer(asset_pair, method)
             topic_name = producer.produce()
-
-            consumer = AverageSpreadConsumer(topic_name)
-            consumer.consume()
