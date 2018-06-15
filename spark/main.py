@@ -1,4 +1,4 @@
-from kafka.consumers.spark_stream_consumer import AverageSpreadConsumer
+from spark.spark_stream_consumer import AverageSpreadConsumer
 
 
 if __name__ == '__main__':
