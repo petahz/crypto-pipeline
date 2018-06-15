@@ -5,7 +5,7 @@ from pykafka.utils import serialize_utf8
 
 
 api = API()
-client = KafkaClient(hosts="localhost:9092")
+client = KafkaClient(zookeeper_hosts="localhost:2181")
 
 
 class Producer:
@@ -33,8 +33,8 @@ class Producer:
             topic = client.topics[topic_name]
 
             with topic.get_producer(delivery_reports=False, serializer=serialize_utf8) as producer:
-                messages = json.dumps(result[self.asset_pair])
+                messages = result[self.asset_pair]
                 for message in messages:
-                    producer.produce(message)
+                    producer.produce(json.dumps(message))
 
         return topic_name
