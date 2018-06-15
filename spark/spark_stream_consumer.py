@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import json
 
 from pyspark import SparkContext
@@ -34,9 +36,7 @@ class AverageSpreadConsumer(SparkStreamConsumer):
     def consume(self):
         # messages come in [timestamp, bid, ask] format, a spread is calculated by (ask-bid)
         parsed = self.kvs.map(lambda v: json.loads(v[1]))
-        spreads_dstream = parsed.map(lambda tx: [tx[0], float(tx[2]) - float(tx[1])])
+        spreads_dstream = parsed.map(lambda tx: [tx[0], Decimal(tx[2]) - Decimal(tx[1])])
         spreads_dstream.pprint()
-
-        print('sparkkkk: ', spreads_dstream)
 
         super().consume()
