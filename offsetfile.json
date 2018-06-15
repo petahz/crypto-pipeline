@@ -1,0 +1,8 @@
+{"partitions": [{"topic": "XXBTZUSD_Spread", "partition": 0, "offset": -1},
+                {"topic": "XETHZUSD_Spread", "partition": 0, "offset": -1},
+                {"topic": "XLTCZUSD_Spread", "partition": 0, "offset": -1},
+                {"topic": "btc_topic", "partition": 0, "offset": -1},
+                {"topic": "topic_btc", "partition": 0, "offset": -1},
+                {"topic": "topic_btc", "partition": 1, "offset": -1},
+                {"topic": "topic_ltc", "partition": 0, "offset": -1}
+], "version":1 }
