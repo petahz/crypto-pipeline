@@ -1,4 +1,3 @@
-from consumers.spark_stream_consumer import AverageSpreadConsumer
 from producers.kraken_producer import Producer
 
 
