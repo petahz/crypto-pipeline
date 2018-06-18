@@ -53,10 +53,11 @@ class AverageSpreadConsumer(SparkStreamConsumer):
         spread_percentage_dstream = recent_spreads_dstream.map(spread_percentage).cache()
 
         count = spread_percentage_dstream.count()
+        print('count: ', count.collect())
 
         sum_spread_dstream = spread_percentage_dstream.reduce(add)
 
-        average_spread_dstream = sum_spread_dstream.map(lambda total: total / count)
-        average_spread_dstream.pprint()
+        # average_spread_dstream = sum_spread_dstream.map(lambda total: total / count)
+        # average_spread_dstream.pprint()
 
         super().consume()
