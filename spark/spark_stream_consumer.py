@@ -51,7 +51,7 @@ class AverageSpreadConsumer(SparkStreamConsumer):
                               db=0)
             r.set('a', 'test')
 
-        average_spread_dstream.foreachRDD(lambda rdd: rdd.foreachPartition(lambda p: p.foreach(set_redis)))
+        average_spread_dstream.foreachRDD(lambda rdd: rdd.foreachPartition(lambda p: r.foreach(set_redis)))
 
         # average_spread_dstream.pprint()
 
