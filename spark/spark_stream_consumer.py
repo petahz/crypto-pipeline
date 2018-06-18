@@ -48,12 +48,10 @@ class AverageSpreadConsumer(SparkStreamConsumer):
 
         average_spread_dstream = spread_sum_count_dstream.mapValues(lambda x: x[0] / x[1])
 
-
-
         def set_redis(msg):
             r.set('a', 'test')
 
-        average_spread_dstream.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis))
+        average_spread_dstream.foreachRDD(lambda rdd: rdd.foreachPartition(lambda p: set_redis(msg) for msg in p))
 
         # average_spread_dstream.pprint()
 
