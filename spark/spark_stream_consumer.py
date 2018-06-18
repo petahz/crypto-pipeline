@@ -36,13 +36,11 @@ class AverageSpreadConsumer(SparkStreamConsumer):
         # messages come in [timestamp, bid, ask] format, a spread is calculated by (ask-bid)
         parsed = self.kvs.map(lambda v: json.loads(v[1]))
 
-        # We use a percentage for a fairer comparison of spread than just the difference
-        # Spread % = 2 x (Ask – Bid) / (Ask + Bid) x 100 %
-        def spread_percentage(tx):
-            percentage = 2 * (Decimal(tx[2]) - Decimal(tx[1])) / ((Decimal(tx[2]) + Decimal(tx[1])) * 100)
-            return (tx[3], Decimal(tx[2]) - Decimal(tx[1]))
+        def calculate_spread(tx):
+            asset_pair = tx[3]
+            return (asset_pair, Decimal(tx[2]) - Decimal(tx[1]))
 
-        spread_percentage_dstream = parsed.map(spread_percentage).mapValues(lambda x: (x, 1))
+        spread_percentage_dstream = parsed.map(calculate_spread).mapValues(lambda x: (x, 1))
 
         spread_sum_count_dstream = spread_percentage_dstream.reduceByKey(lambda x, y: (x[0]+y[0], x[1]+y[1]))
 
@@ -51,12 +49,10 @@ class AverageSpreadConsumer(SparkStreamConsumer):
         r = redis.StrictRedis(host='redis-ec-cluster.v7ufhi.clustercfg.use1.cache.amazonaws.com', port=6379, db=0)
 
         def store_to_redis(rdd):
-            print('pickle')
-            # def send_message(partition):
-            #     print('am i pickling')
-            #     partition.foreach(lambda msg: r.set(self.topic_name, msg))
-            #
-            # rdd.foreachPartition(send_message)
+            def send_message(partition):
+                partition.foreach(lambda msg: r.set(self.topic_name, msg))
+
+            rdd.foreachPartition(send_message)
 
         average_spread_dstream.foreachRDD(store_to_redis)
 
