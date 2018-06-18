@@ -49,7 +49,7 @@ class AverageSpreadConsumer(SparkStreamConsumer):
         # Spread % = 2 x (Ask – Bid) / (Ask + Bid) x 100 %
         def spread_percentage(tx):
             percentage = 2 * (Decimal(tx[2]) - Decimal(tx[1])) / ((Decimal(tx[2]) + Decimal(tx[1])) * 100)
-            return ('spread_percentage', percentage)
+            return (tx[3], percentage)
 
         spread_percentage_dstream = recent_spreads_dstream.map(spread_percentage).mapValues(lambda x: (x, 1))
 
@@ -59,14 +59,15 @@ class AverageSpreadConsumer(SparkStreamConsumer):
 
         r = redis.StrictRedis(host='redis-ec-cluster.v7ufhi.clustercfg.use1.cache.amazonaws.com', port=6379, db=0)
 
-        # def store_to_redis(rdd):
-        #     def send_message(partition):
-        #         print('am i pickling')
-        #         partition.foreach(lambda msg: r.set(self.topic_name, msg))
-        #
-        #     rdd.foreachPartition(send_message)
-        #
-        # average_spread_dstream.foreachRDD(store_to_redis)
+        def store_to_redis(rdd):
+            print('pickle')
+            # def send_message(partition):
+            #     print('am i pickling')
+            #     partition.foreach(lambda msg: r.set(self.topic_name, msg))
+            #
+            # rdd.foreachPartition(send_message)
+
+        average_spread_dstream.foreachRDD(store_to_redis)
 
         average_spread_dstream.pprint()
 
