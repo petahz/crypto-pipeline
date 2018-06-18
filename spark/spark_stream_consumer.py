@@ -50,11 +50,11 @@ class AverageSpreadConsumer(SparkStreamConsumer):
 
         def store_to_redis(rdd):
             def send_message(partition):
-                partition.foreach(lambda msg: r.set('a', 'test'))
+                partition.foreach(lambda msg: )
 
             rdd.foreachPartition(send_message)
 
-        average_spread_dstream.foreachRDD(store_to_redis)
+        average_spread_dstream.foreach(lambda x: r.set('a', 'test'))
 
         average_spread_dstream.pprint()
 
