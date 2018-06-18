@@ -38,18 +38,18 @@ class AverageSpreadConsumer(SparkStreamConsumer):
         parsed = self.kvs.map(lambda v: json.loads(v[1]))
 
         # Filter to spreads in the last 5 seconds
-        # def last_five_seconds(sp):
-        #     five_seconds_ago = time.time() - timedelta(seconds=5).total_seconds()
-        #     return sp[0] > five_seconds_ago
-        #
-        # recent_spreads_dstream = parsed.filter(last_five_seconds)
+        def last_five_seconds(sp):
+            five_seconds_ago = time.time() - timedelta(seconds=5).total_seconds()
+            return sp[0] > five_seconds_ago
+
+        recent_spreads_dstream = parsed.filter(last_five_seconds)
 
         # We use a percentage for a fairer comparison of spread than just the difference
         # Spread % = 2 x (Ask – Bid) / (Ask + Bid) x 100 %
         def spread_percentage(tx):
             return 2 * (Decimal(tx[2]) - Decimal(tx[1])) / ((Decimal(tx[2]) + Decimal(tx[1])) * 100)
 
-        spread_percentage_dstream = parsed.map(spread_percentage)
+        spread_percentage_dstream = recent_spreads_dstream.map(spread_percentage)
         spread_percentage_dstream.pprint()
 
         # count = spread_percentage_dstream.count()
