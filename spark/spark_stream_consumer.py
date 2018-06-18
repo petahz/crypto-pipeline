@@ -59,13 +59,15 @@ class AverageSpreadConsumer(SparkStreamConsumer):
 
         r = redis.StrictRedis(host='redis-ec-cluster.v7ufhi.clustercfg.use1.cache.amazonaws.com', port=6379, db=0)
 
-        def store_to_redis(rdd):
-            def send_message(partition):
-                print('am i pickling')
-                partition.foreach(lambda msg: r.set(self.topic_name, msg))
+        # def store_to_redis(rdd):
+        #     def send_message(partition):
+        #         print('am i pickling')
+        #         partition.foreach(lambda msg: r.set(self.topic_name, msg))
+        #
+        #     rdd.foreachPartition(send_message)
+        #
+        # average_spread_dstream.foreachRDD(store_to_redis)
 
-            rdd.foreachPartition(send_message)
-
-        average_spread_dstream.foreachRDD(store_to_redis)
+        average_spread_dstream.pprint()
 
         super().consume()
