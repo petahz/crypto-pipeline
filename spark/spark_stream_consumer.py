@@ -16,7 +16,7 @@ class SparkStreamConsumer:
 
     def __init__(self):
         self.sc = SparkContext(appName=self.spark_context)
-        self.ssc = StreamingContext(self.sc, 1)
+        self.ssc = StreamingContext(self.sc, 5)
 
     def consume(self):
         self.ssc.start()
