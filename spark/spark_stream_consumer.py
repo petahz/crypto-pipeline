@@ -46,16 +46,12 @@ class AverageSpreadConsumer(SparkStreamConsumer):
 
         average_spread_dstream = spread_sum_count_dstream.mapValues(lambda x: x[0] / x[1])
 
-        r = redis.StrictRedis(host='redis-ec-cluster.v7ufhi.clustercfg.use1.cache.amazonaws.com', port=6379,
+        def set_redis(msg):
+            r = redis.StrictRedis(host='redis-ec-cluster.v7ufhi.clustercfg.use1.cache.amazonaws.com', port=6379,
                               db=0)
+            r.set('a', 'test')
 
-        def store_to_redis(rdd):
-            def send_message(partition):
-                partition.foreach(lambda msg: r.set('a', 'test'))
-
-            rdd.foreachPartition(send_message)
-
-        average_spread_dstream.foreach(lambda x: r.set('a', 'test'))
+        average_spread_dstream.foreachRDD(lambda rdd: rdd.foreachPartition(lambda p: p.foreach(set_redis)))
 
         # average_spread_dstream.pprint()
 
