@@ -11,6 +11,13 @@ KAFKA_NODES = ['ec2-52-44-121-53.compute-1.amazonaws.com:9092', 'ec2-52-22-234-2
                  'ec2-52-45-23-147.compute-1.amazonaws.com:9092', 'ec2-18-207-65-150.compute-1.amazonaws.com:9092']
 
 
+def set_redis(partition):
+    for msg in partition:
+        r = redis.StrictRedis(host='redis-ec-cluster.v7ufhi.clustercfg.use1.cache.amazonaws.com', port=6379,
+                              db=0)
+        r.set('a', 'test')
+
+
 class SparkStreamConsumer:
     spark_context = None
 
@@ -45,12 +52,6 @@ class AverageSpreadConsumer(SparkStreamConsumer):
         spread_sum_count_dstream = spread_percentage_dstream.reduceByKey(lambda x, y: (x[0]+y[0], x[1]+y[1]))
 
         average_spread_dstream = spread_sum_count_dstream.mapValues(lambda x: x[0] / x[1])
-
-        def set_redis(partition):
-            for msg in partition:
-                r = redis.StrictRedis(host='redis-ec-cluster.v7ufhi.clustercfg.use1.cache.amazonaws.com', port=6379,
-                                      db=0)
-                r.set('a', 'test')
 
         average_spread_dstream.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis))
 
