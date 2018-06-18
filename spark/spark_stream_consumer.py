@@ -51,7 +51,6 @@ class AverageSpreadConsumer(SparkStreamConsumer):
                 r = redis.StrictRedis(host='redis-ec-cluster.v7ufhi.clustercfg.use1.cache.amazonaws.com', port=6379,
                                       db=0)
                 r.set('a', 'test')
-                pass
 
         average_spread_dstream.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis))
 
