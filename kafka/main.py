@@ -4,7 +4,7 @@ from producers.kraken_producer import Producer
 
 if __name__ == '__main__':
     # Kraken asset pairs for BTC, ETH, and LTC to USD prices
-    asset_pairs = ['XXBTZUSD', 'XETHZUSD', 'XLTCZUSD']
+    asset_pairs = ['XXBTZUSD', 'XETHZUSD', 'XLTCZUSD', 'BCHXBT']
     methods = ['Spread']
     producers = []
 
