@@ -49,7 +49,7 @@ class AverageSpreadConsumer(SparkStreamConsumer):
         # Spread % = 2 x (Ask – Bid) / (Ask + Bid) x 100 %
         def spread_percentage(tx):
             percentage = 2 * (Decimal(tx[2]) - Decimal(tx[1])) / ((Decimal(tx[2]) + Decimal(tx[1])) * 100)
-            return ('spread_percentage', percentage)
+            return (self.topic_name, percentage)
 
         spread_percentage_dstream = recent_spreads_dstream.map(spread_percentage).mapValues(lambda x: (x, 1))
 
