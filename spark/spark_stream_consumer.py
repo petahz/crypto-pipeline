@@ -49,7 +49,7 @@ class AverageSpreadConsumer(SparkStreamConsumer):
             percentage = 2 * (Decimal(tx[2]) - Decimal(tx[1])) / ((Decimal(tx[2]) + Decimal(tx[1])) * 100)
             return (tx[3], Decimal(tx[2]) - Decimal(tx[1]))
 
-        spread_percentage_dstream = recent_spreads_dstream.map(spread_percentage).mapValues(lambda x: (x, 1))
+        spread_percentage_dstream = parsed.map(spread_percentage).mapValues(lambda x: (x, 1))
 
         spread_sum_count_dstream = spread_percentage_dstream.reduceByKey(lambda x, y: (x[0]+y[0], x[1]+y[1]))
 
