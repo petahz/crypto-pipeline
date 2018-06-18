@@ -4,7 +4,7 @@ import json
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
-from operator import add
+import redis
 import time
 
 KAFKA_NODES = ['ec2-52-44-121-53.compute-1.amazonaws.com:9092', 'ec2-52-22-234-28.compute-1.amazonaws.com:9092',
@@ -56,6 +56,15 @@ class AverageSpreadConsumer(SparkStreamConsumer):
         spread_sum_count_dstream = spread_percentage_dstream.reduceByKey(lambda x, y: (x[0]+y[0], x[1]+y[1]))
 
         average_spread_dstream = spread_sum_count_dstream.mapValues(lambda x: x[0] / x[1])
-        average_spread_dstream.pprint()
+
+        r = redis.StrictRedis(host='redis-ec-cluster.v7ufhi.clustercfg.use1.cache.amazonaws.com', port=6379, db=0)
+
+        def store_to_redis(rdd):
+            def send_message(partition):
+                partition.foreach(lambda msg: r.set(self.topic_name, msg))
+
+            rdd.foreachPartition(send_message)
+
+        average_spread_dstream.foreachRDD(store_to_redis)
 
         super().consume()

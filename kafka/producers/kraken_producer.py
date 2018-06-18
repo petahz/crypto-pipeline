@@ -35,6 +35,7 @@ class Producer:
             with topic.get_producer(delivery_reports=False, serializer=serialize_utf8) as producer:
                 messages = result[self.asset_pair]
                 for message in messages:
+                    message.append(topic_name)
                     producer.produce(json.dumps(message))
                     print(topic_name, ':', message)
 
