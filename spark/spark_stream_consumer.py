@@ -20,9 +20,6 @@ class SparkStreamConsumer:
         self.sc = SparkContext(appName=self.spark_context)
         self.ssc = StreamingContext(self.sc, 5)
 
-        self.kvs = KafkaUtils.createDirectStream(self.ssc, [self.topic_name],
-                                                 {'metadata.broker.list': 'localhost:9092'})
-
     def consume(self):
         self.ssc.start()
         self.ssc.awaitTermination()
@@ -34,7 +31,10 @@ class AverageSpreadConsumer(SparkStreamConsumer):
     def __init__(self, topic_name):
         super().__init__(topic_name)
 
-    def consume(self):
+    def consume(self, topic_name):
+        self.kvs = KafkaUtils.createDirectStream(self.ssc, [topic_name],
+                                                 {'metadata.broker.list': 'localhost:9092'})
+
         # messages come in [timestamp, bid, ask] format, a spread is calculated by (ask-bid)
         parsed = self.kvs.map(lambda v: json.loads(v[1]))
 

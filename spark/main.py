@@ -6,9 +6,10 @@ if __name__ == '__main__':
     asset_pairs = ['XXBTZUSD', 'XETHZUSD', 'XLTCZUSD', 'BCHXBT']
     methods = ['Spread']
 
+    consumer = AverageSpreadConsumer()
+
     for asset_pair in asset_pairs:
         for method in methods:
             topic_name = '{}_{}'.format(asset_pair, method)
 
-            consumer = AverageSpreadConsumer(topic_name)
-            consumer.consume()
+            consumer.consume(topic_name)
