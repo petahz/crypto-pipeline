@@ -61,6 +61,7 @@ class AverageSpreadConsumer(SparkStreamConsumer):
 
         def store_to_redis(rdd):
             def send_message(partition):
+                print('am i pickling')
                 partition.foreach(lambda msg: r.set(self.topic_name, msg))
 
             rdd.foreachPartition(send_message)
