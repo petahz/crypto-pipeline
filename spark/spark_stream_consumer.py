@@ -29,8 +29,8 @@ class AverageSpreadConsumer(SparkStreamConsumer):
     def __init__(self):
         super().__init__()
 
-    def consume(self, topic_name):
-        self.kvs = KafkaUtils.createDirectStream(self.ssc, [topic_name],
+    def consume(self, topics):
+        self.kvs = KafkaUtils.createDirectStream(self.ssc, topics,
                                                  {'metadata.broker.list': 'localhost:9092'})
 
         # messages come in [timestamp, bid, ask] format, a spread is calculated by (ask-bid)
