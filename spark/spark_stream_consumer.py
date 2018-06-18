@@ -14,9 +14,7 @@ KAFKA_NODES = ['ec2-52-44-121-53.compute-1.amazonaws.com:9092', 'ec2-52-22-234-2
 class SparkStreamConsumer:
     spark_context = None
 
-    def __init__(self, topic_name):
-        self.topic_name = topic_name
-
+    def __init__(self):
         self.sc = SparkContext(appName=self.spark_context)
         self.ssc = StreamingContext(self.sc, 5)
 
