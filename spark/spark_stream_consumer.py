@@ -48,16 +48,14 @@ class AverageSpreadConsumer(SparkStreamConsumer):
         # We use a percentage for a fairer comparison of spread than just the difference
         # Spread % = 2 x (Ask – Bid) / (Ask + Bid) x 100 %
         def spread_percentage(tx):
-            return 2 * (Decimal(tx[2]) - Decimal(tx[1])) / ((Decimal(tx[2]) + Decimal(tx[1])) * 100)
+            percentage = 2 * (Decimal(tx[2]) - Decimal(tx[1])) / ((Decimal(tx[2]) + Decimal(tx[1])) * 100)
+            return (1, percentage)
 
         spread_percentage_dstream = recent_spreads_dstream.map(spread_percentage).cache()
 
-        count = spread_percentage_dstream.count()
+        spread_sum_count_dstream = spread_percentage_dstream.reduceByKey(lambda x, y: (x[1]+y[1], x[0]+y[0]))
 
-        sum_spread_dstream = spread_percentage_dstream.reduce(add)
-        print('sum: ', sum_spread_dstream.collect())
-
-        # average_spread_dstream = sum_spread_dstream.map(lambda total: total / count)
-        # average_spread_dstream.pprint()
+        average_spread_dstream = spread_sum_count_dstream.map(lambda total, count: total / count)
+        average_spread_dstream.pprint()
 
         super().consume()
