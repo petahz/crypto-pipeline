@@ -10,8 +10,6 @@ import time
 KAFKA_NODES = ['ec2-52-44-121-53.compute-1.amazonaws.com:9092', 'ec2-52-22-234-28.compute-1.amazonaws.com:9092',
                  'ec2-52-45-23-147.compute-1.amazonaws.com:9092', 'ec2-18-207-65-150.compute-1.amazonaws.com:9092']
 
-r = redis.StrictRedis(host='redis-ec-cluster.v7ufhi.clustercfg.use1.cache.amazonaws.com', port=6379,
-                              db=0)
 
 class SparkStreamConsumer:
     spark_context = None
@@ -50,7 +48,9 @@ class AverageSpreadConsumer(SparkStreamConsumer):
 
         def set_redis(partition):
             for msg in partition:
-                # r.set('a', 'test')
+                r = redis.StrictRedis(host='redis-ec-cluster.v7ufhi.clustercfg.use1.cache.amazonaws.com', port=6379,
+                                      db=0)
+                r.set('a', 'test')
                 pass
 
         average_spread_dstream.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis))
