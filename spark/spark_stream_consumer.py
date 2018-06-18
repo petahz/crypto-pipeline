@@ -4,6 +4,7 @@ import json
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
+from operator import add
 import time
 
 KAFKA_NODES = ['ec2-52-44-121-53.compute-1.amazonaws.com:9092', 'ec2-52-22-234-28.compute-1.amazonaws.com:9092',
@@ -49,15 +50,14 @@ class AverageSpreadConsumer(SparkStreamConsumer):
         def spread_percentage(tx):
             return 2 * (Decimal(tx[2]) - Decimal(tx[1])) / ((Decimal(tx[2]) + Decimal(tx[1])) * 100)
 
-        spread_percentage_dstream = recent_spreads_dstream.map(spread_percentage)
+        spread_percentage_dstream = recent_spreads_dstream.map(spread_percentage).cache()
 
         count = spread_percentage_dstream.count()
 
-        sum_spread_dstream = spread_percentage_dstream.reduce(lambda x,y: x + y)
-        sum_spread_dstream.pprint()
+        if count > 0:
+            sum_spread_dstream = spread_percentage_dstream.reduce(add)
 
-        # average_spread_dstream = sum_spread_dstream.map(lambda sum: sum / count)
-        #
-        # average_spread_dstream.pprint()
+            average_spread_dstream = sum_spread_dstream.map(lambda total: total / count)
+            average_spread_dstream.pprint()
 
         super().consume()
