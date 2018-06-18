@@ -16,7 +16,7 @@ class SparkStreamConsumer:
 
     def __init__(self):
         self.sc = SparkContext(appName=self.spark_context)
-        self.ssc = StreamingContext(self.sc, 5)
+        self.ssc = StreamingContext(self.sc, 1)
 
     def consume(self):
         self.ssc.start()
@@ -35,13 +35,6 @@ class AverageSpreadConsumer(SparkStreamConsumer):
 
         # messages come in [timestamp, bid, ask] format, a spread is calculated by (ask-bid)
         parsed = self.kvs.map(lambda v: json.loads(v[1]))
-
-        # Filter to spreads in the last 5 seconds
-        def last_five_seconds(sp):
-            five_seconds_ago = time.time() - timedelta(seconds=5).total_seconds()
-            return sp[0] > five_seconds_ago
-
-        recent_spreads_dstream = parsed.filter(last_five_seconds)
 
         # We use a percentage for a fairer comparison of spread than just the difference
         # Spread % = 2 x (Ask – Bid) / (Ask + Bid) x 100 %
