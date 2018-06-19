@@ -1,4 +1,3 @@
-from datetime import timedelta
 from decimal import Decimal
 import json
 from pyspark import SparkContext
@@ -6,15 +5,13 @@ from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 import redis
 
-KAFKA_NODES = ['ec2-52-44-121-53.compute-1.amazonaws.com:9092', 'ec2-52-22-234-28.compute-1.amazonaws.com:9092',
-                 'ec2-52-45-23-147.compute-1.amazonaws.com:9092', 'ec2-18-207-65-150.compute-1.amazonaws.com:9092']
 
-r = redis.StrictRedis(host='localhost', port=6379, db=0)
+r = redis.StrictRedis(host='redis-group.v7ufhi.ng.0001.use1.cache.amazonaws.com', port=6379, db=0)
 
 
 def set_redis(partition):
     for msg in partition:
-        r.set('a', 'test')
+        r.set('b', 'test')
 
 
 class SparkStreamConsumer:
