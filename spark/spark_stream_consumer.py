@@ -11,7 +11,7 @@ r = redis.StrictRedis(host='redis-group.v7ufhi.ng.0001.use1.cache.amazonaws.com'
 
 def set_redis(partition):
     for msg in partition:
-        r.set('b', 'test')
+        r.set(msg[0], msg[1])
 
 
 class SparkStreamConsumer:
