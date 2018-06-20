@@ -27,7 +27,7 @@ class S3Consumer:
                     content = json.loads(message.value.decode())
                     body_content.append(content)
                     timestamp = content[0]
-                    dt_attr = datetime.datetime(timestamp)
+                    dt_attr = datetime.datetime.utcfromtimestamp(timestamp)
                     key = '{0}/{1}/{2}/{3}/{4}/{5}'.format(asset_pair, method, dt_attr.year, dt_attr.month,
                                                            dt_attr.day, timestamp)
 
