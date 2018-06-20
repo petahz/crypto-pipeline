@@ -15,7 +15,7 @@ class S3Consumer:
     def consume(self):
         # We want to store all data coming in Kafka to S3
         for topic in kf_client.topics:
-            asset_pair, method = topic.split('_')
+            asset_pair, method = topic.decode().split('_')
             consumer = topic.get_simple_consumer()
             current_ts = 0
             body_content = []
