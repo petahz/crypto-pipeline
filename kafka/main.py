@@ -1,11 +1,12 @@
-import time
 from producers.kraken_producer import Producer
+import time
 
 
 if __name__ == '__main__':
     # Kraken asset pairs for BTC, ETH, and LTC to USD prices
-    asset_pairs = ['XXBTZUSD', 'XETHZUSD', 'XLTCZUSD', 'BCHXBT']
+    asset_pairs = ['XXBTZUSD', 'XETHZUSD', 'XLTCZUSD', 'BCHXBT', 'XETHXXBT', 'XLTCXXBT']
     methods = ['Spread']
+    batch_methods = ['Depth']
     producers = []
 
     for asset_pair in asset_pairs:
