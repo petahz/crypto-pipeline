@@ -1,5 +1,5 @@
 import boto3
-from datetime import datetime
+import datetime
 import json
 from pykafka import KafkaClient
 
