@@ -67,7 +67,7 @@ class KrakenProducer:
             # Set the since parameter for where in time to get the next batch of stream data from the REST API
             self.since_time = result['last']
 
-            topic_name = '{}_{}'.format(self.asset_pair, self.api_method)
+            topic_name = 'Kraken_{}'.format(self.api_method)
 
             for data in result[self.asset_pair]:
                 # Trigger any available delivery report callbacks from previous produce() calls
@@ -78,7 +78,7 @@ class KrakenProducer:
                 # Asynchronously produce a message, the delivery report callback
                 # will be triggered from poll() above, or flush() below, when the message has
                 # been successfully delivered or failed permanently.
-                p.produce(topic_name, message.encode('utf-8'), callback=delivery_report)
+                p.produce(topic_name, message.encode('utf-8'), key=self.asset_pair, callback=delivery_report)
 
             # Wait for any outstanding messages to be delivered and delivery report
             # callbacks to be triggered.
