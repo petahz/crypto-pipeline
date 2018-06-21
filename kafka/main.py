@@ -2,7 +2,7 @@ from kafka.producers.kraken_producer import KrakenProducer
 import time
 
 
-def start_kraken_producer:
+def start_kraken_producer():
     # Kraken asset pairs for BTC, ETH, and LTC to USD prices
     asset_pairs = ['XXBTZUSD', 'XETHZUSD', 'XLTCZUSD', 'BCHXBT', 'XETHXXBT', 'XLTCXXBT']
     methods = ['Spread']
