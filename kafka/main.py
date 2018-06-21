@@ -1,8 +1,8 @@
-from producers.kraken_producer import Producer
+from kafka.producers.kraken_producer import KrakenProducer
 import time
 
 
-if __name__ == '__main__':
+def start_kraken_producer:
     # Kraken asset pairs for BTC, ETH, and LTC to USD prices
     asset_pairs = ['XXBTZUSD', 'XETHZUSD', 'XLTCZUSD', 'BCHXBT', 'XETHXXBT', 'XLTCXXBT']
     methods = ['Spread']
@@ -11,9 +11,9 @@ if __name__ == '__main__':
 
     for asset_pair in asset_pairs:
         for method in methods:
-            producers.append(Producer(asset_pair, method))
+            producers.append(KrakenProducer(asset_pair, method))
 
     while True:
         time.sleep(2)
         for producer in producers:
-            producer.produce()
+            producer.produce_confluent()

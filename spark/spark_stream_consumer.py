@@ -5,6 +5,7 @@ from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 import redis
 
+from config.config import KAFKA_NODES
 
 r = redis.StrictRedis(host='redis-group.v7ufhi.ng.0001.use1.cache.amazonaws.com', port=6379, db=0)
 
@@ -34,7 +35,7 @@ class AverageSpreadConsumer(SparkStreamConsumer):
 
     def consume(self, topics):
         self.kvs = KafkaUtils.createDirectStream(self.ssc, topics,
-                                                 {'metadata.broker.list': 'localhost:9092'})
+                                                 {'metadata.broker.list': KAFKA_NODES.join('')})
 
         # messages come in [timestamp, bid, ask] format, a spread is calculated by (ask-bid)
         parsed = self.kvs.map(lambda v: json.loads(v[1]))
