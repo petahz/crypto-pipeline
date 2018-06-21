@@ -43,7 +43,7 @@ class KrakenProducer:
         return topic_name
 
     def produce_confluent(self):
-        p = Producer({'bootstrap.servers': 'mybroker1,mybroker2'})
+        p = Producer({'bootstrap.servers': 'localhost'})
 
         def delivery_report(err, msg):
             """ Called once for each message produced to indicate delivery result.
