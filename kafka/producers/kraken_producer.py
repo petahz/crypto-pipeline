@@ -51,7 +51,7 @@ class KrakenProducer:
             if err is not None:
                 print('Message delivery failed: {}'.format(err))
             else:
-                print('Message delivered to {} [{}]'.format(msg.topic(), msg.partition()))
+                print('Message delivered to {} [{}] - {}'.format(msg.topic(), msg.partition(), self.asset_pair))
 
         response = api.query_public(self.api_method, {
             'pair': self.asset_pair,
