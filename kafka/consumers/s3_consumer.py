@@ -22,7 +22,7 @@ class S3Consumer:
 
         for message in consumer:
             if message is not None:
-                asset_pair = message.partition_key
+                asset_pair = message.partition_key.decode()
                 content = json.loads(message.value.decode())
                 body_content.append(content)
                 timestamp = content[0]
@@ -35,7 +35,7 @@ class S3Consumer:
                     s3.put_object(Body=json.dumps(body_content), Bucket=self.bucket_name, Key=key)
                     body_content = []
 
-                print(message.offset, message.partition_key, message.value)
+                print(message.offset, asset_pair, content)
 
 
 if __name__ == '__main__':
