@@ -72,7 +72,8 @@ class KrakenProducer:
             result = response['result']
 
             # Set the since parameter for where in time to get the next batch of stream data from the REST API
-            self.since_time = result['last']
+            if getattr(result, 'last', None) is not None:
+                self.since_time = result['last']
 
             topic_name = 'Kraken_{}'.format(self.api_method)
 
