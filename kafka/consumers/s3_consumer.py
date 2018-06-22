@@ -62,7 +62,7 @@ class S3Consumer:
                     print(msg.error())
                     break
 
-            topic_name = msg.topic().decode()
+            topic_name = msg.topic()
             exchange, method = topic_name.split('_')
 
             asset_pair = msg.key().decode()
