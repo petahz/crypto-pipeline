@@ -50,6 +50,8 @@ class S3Consumer:
         topics = [topic.decode() for topic in kf_client.topics]
         c.subscribe(topics)
 
+        body_content = []
+        current_key = ''
         while True:
             msg = c.poll(1.0)
 
@@ -73,9 +75,9 @@ class S3Consumer:
             key = '{0}/{1}/{2}/{3}/{4}/{5}/{6}'.format(exchange, asset_pair, method, dt_attr.year, dt_attr.month,
                                                        dt_attr.day, timestamp)
 
-            if current_ts != timestamp:
-                current_ts = timestamp
+            if current_key != key:
                 s3.put_object(Body=json.dumps(body_content), Bucket=self.bucket_name, Key=key)
+                current_key = key
                 body_content = []
 
             print('Received message: {}'.format(msg.value().decode('utf-8')))
