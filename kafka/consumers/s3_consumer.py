@@ -13,20 +13,21 @@ class S3Consumer:
         self.bucket_name = bucket_name
 
     def consume(self, topic_name):
-        asset_pair, method = topic_name.decode().split('_')
-        topic = kf_client.topics[topic_name]
+        exchange, method = topic_name.decode().split('_')
 
+        topic = kf_client.topics[topic_name]
         consumer = topic.get_simple_consumer()
         current_ts = 0
         body_content = []
 
         for message in consumer:
             if message is not None:
+                asset_pair = message.key
                 content = json.loads(message.value.decode())
                 body_content.append(content)
                 timestamp = content[0]
                 dt_attr = datetime.datetime.utcfromtimestamp(timestamp)
-                key = '{0}/{1}/{2}/{3}/{4}/{5}'.format(asset_pair, method, dt_attr.year, dt_attr.month,
+                key = '{0}/{1}/{2}/{3}/{4}/{5}/{6}'.format(exchange, asset_pair, method, dt_attr.year, dt_attr.month,
                                                        dt_attr.day, timestamp)
 
                 if current_ts != timestamp:
