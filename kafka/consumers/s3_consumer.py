@@ -47,7 +47,8 @@ class S3Consumer:
             }
         })
 
-        c.subscribe(kf_client.topics)
+        topics = [topic.decode() for topic in kf_client.topics]
+        c.subscribe(topics)
 
         while True:
             msg = c.poll(1.0)
