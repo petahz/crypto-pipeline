@@ -10,16 +10,20 @@ client = KafkaClient(zookeeper_hosts="localhost:2181")
 
 
 class KrakenProducer:
-    def __init__(self, asset_pair, api_method):
+    def __init__(self, asset_pair, api_method, interval=None):
         self.asset_pair = asset_pair
         self.api_method = api_method
+        self.interval = interval
         self.since_time = 0
 
     def produce(self):
-        response = api.query_public(self.api_method, {
+        query_params = {
             'pair': self.asset_pair,
             'since': self.since_time
-        })
+        }
+        if self.interval is not None:
+            query_params['interval'] = self.interval
+        response = api.query_public(self.api_method, query_params)
 
         if len(response['error']) > 0:
             for e in response['error']:
@@ -53,10 +57,13 @@ class KrakenProducer:
             else:
                 print('Message delivered to {} [{}] - {}'.format(msg.topic(), msg.partition(), self.asset_pair))
 
-        response = api.query_public(self.api_method, {
+        query_params = {
             'pair': self.asset_pair,
             'since': self.since_time
-        })
+        }
+        if self.interval is not None:
+            query_params['interval'] = self.interval
+        response = api.query_public(self.api_method, query_params)
 
         if len(response['error']) > 0:
             for e in response['error']:
