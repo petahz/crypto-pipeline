@@ -1,4 +1,5 @@
 import boto3
+from confluent_kafka import Consumer, KafkaError
 import datetime
 import json
 from pykafka import KafkaClient
@@ -37,8 +38,49 @@ class S3Consumer:
 
                 print(message.offset, asset_pair, content)
 
+    def consume_confluent(self):
+        c = Consumer({
+            'bootstrap.servers': 'localhost',
+            'group.id': 's3',
+            'default.topic.config': {
+                'auto.offset.reset': 'smallest'
+            }
+        })
+
+        c.subscribe(kf_client.topics)
+
+        while True:
+            msg = c.poll(1.0)
+
+            if msg is None:
+                continue
+            if msg.error():
+                if msg.error().code() == KafkaError._PARTITION_EOF:
+                    continue
+                else:
+                    print(msg.error())
+                    break
+
+            topic_name = msg.topic().decode()
+            exchange, method = topic_name.split('_')
+
+            asset_pair = msg.key().decode()
+            content = json.loads(msg.value().decode())
+            body_content.append(content)
+            timestamp = content[0]
+            dt_attr = datetime.datetime.utcfromtimestamp(timestamp)
+            key = '{0}/{1}/{2}/{3}/{4}/{5}/{6}'.format(exchange, asset_pair, method, dt_attr.year, dt_attr.month,
+                                                       dt_attr.day, timestamp)
+
+            if current_ts != timestamp:
+                current_ts = timestamp
+                s3.put_object(Body=json.dumps(body_content), Bucket=self.bucket_name, Key=key)
+                body_content = []
+
+            print('Received message: {}'.format(msg.value().decode('utf-8')))
+
+        c.close()
 
 if __name__ == '__main__':
     # We want to store all data coming in Kafka to S3
-    for topic_name in kf_client.topics:
-        S3Consumer(bucket_name='crypto-pipeline').consume(topic_name)
+    S3Consumer(bucket_name='crypto-pipeline').consume_confluent()
