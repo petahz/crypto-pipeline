@@ -47,7 +47,7 @@ class S3Consumer:
             }
         })
 
-        topics = [topic.decode() for topic in kf_client.topics]
+        topics = [topic.decode() for topic in kf_client.topics if 'Depth' not in topic.decode()]
         c.subscribe(topics)
 
         body_content = []
@@ -69,21 +69,25 @@ class S3Consumer:
 
             asset_pair = msg.key().decode()
             content = json.loads(msg.value().decode())
-            print('content: ', content)
             body_content.append(content)
-            timestamp = content[0]
-            dt_attr = datetime.datetime.utcfromtimestamp(timestamp)
-            key = '{0}/{1}/{2}/{3}/{4}/{5}/{6}'.format(exchange, asset_pair, method, dt_attr.year, dt_attr.month,
-                                                       dt_attr.day, timestamp)
+            try:
+                timestamp = content[0]
+                dt_attr = datetime.datetime.utcfromtimestamp(timestamp)
+                key = '{0}/{1}/{2}/{3}/{4}/{5}/{6}'.format(exchange, asset_pair, method, dt_attr.year, dt_attr.month,
+                                                           dt_attr.day, timestamp)
 
-            if current_key != key:
-                s3.put_object(Body=json.dumps(body_content), Bucket=self.bucket_name, Key=key)
-                current_key = key
-                body_content = []
+                if current_key != key:
+                    s3.put_object(Body=json.dumps(body_content), Bucket=self.bucket_name, Key=key)
+                    current_key = key
+                    body_content = []
 
-            print('Received message: {}'.format(msg.value().decode('utf-8')))
+                print('Received message: {}'.format(msg.value().decode('utf-8')))
+            except TypeError:
+                # content does not contain a timestamp
+                pass
 
         c.close()
+
 
 if __name__ == '__main__':
     # We want to store all data coming in Kafka to S3
