@@ -22,7 +22,7 @@ class S3Consumer:
 
         for message in consumer:
             if message is not None:
-                print ('message: ', message.__dict__)
+                print ('message: ', message)
                 asset_pair = message.key
                 content = json.loads(message.value.decode())
                 body_content.append(content)
