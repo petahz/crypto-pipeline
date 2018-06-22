@@ -69,6 +69,7 @@ class S3Consumer:
 
             asset_pair = msg.key().decode()
             content = json.loads(msg.value().decode())
+            print('content: ', content)
             body_content.append(content)
             timestamp = content[0]
             dt_attr = datetime.datetime.utcfromtimestamp(timestamp)
