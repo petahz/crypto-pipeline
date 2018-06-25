@@ -65,7 +65,7 @@ class S3Consumer:
                     break
 
             topic_name = msg.topic()
-            exchange, method = topic_name.split('_')
+            exchange, method, interval = topic_name.split('_')
 
             asset_pair = msg.key().decode()
             content = json.loads(msg.value().decode())
@@ -73,15 +73,19 @@ class S3Consumer:
             try:
                 timestamp = content[0]
                 dt_attr = datetime.datetime.utcfromtimestamp(timestamp)
-                key = '{0}/{1}/{2}/{3}/{4}/{5}/{6}'.format(exchange, asset_pair, method, dt_attr.year, dt_attr.month,
-                                                           dt_attr.day, timestamp)
+                if interval is None:
+                    key = '{0}/{1}/{2}/{3}/{4}/{5}/{6}'.format(exchange, asset_pair, method, dt_attr.year,
+                                                               dt_attr.month, dt_attr.day, timestamp)
+                else:
+                    key = '{0}/{1}/{2}/Interval-{3}/{4}/{5}/{6}'.format(exchange, asset_pair, method, interval,
+                                                                        dt_attr.year, dt_attr.month, timestamp)
 
                 if current_key != key:
                     s3.put_object(Body=json.dumps(body_content), Bucket=self.bucket_name, Key=key)
                     current_key = key
                     body_content = []
 
-                print('Received message: {}'.format(msg.value().decode('utf-8')))
+                print('Received topic: {}, message: {}'.format(topic_name, content))
             except TypeError:
                 # content does not contain a timestamp
                 pass

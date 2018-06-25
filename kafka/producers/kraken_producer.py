@@ -76,6 +76,8 @@ class KrakenProducer:
                 self.since_time = result['last']
 
             topic_name = 'Kraken_{}'.format(self.api_method)
+            if self.interval is not None:
+                topic_name += '_{}'.format(self.interval)
 
             for data in result[self.asset_pair]:
                 # Trigger any available delivery report callbacks from previous produce() calls
@@ -83,9 +85,6 @@ class KrakenProducer:
 
                 message = json.dumps(data)
 
-                # Asynchronously produce a message, the delivery report callback
-                # will be triggered from poll() above, or flush() below, when the message has
-                # been successfully delivered or failed permanently.
                 p.produce(topic_name, message.encode('utf-8'), key=self.asset_pair, callback=delivery_report)
 
             # Wait for any outstanding messages to be delivered and delivery report

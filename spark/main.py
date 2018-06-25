@@ -1,16 +1,19 @@
-from spark_stream_consumer import AverageSpreadConsumer
+from spark_stream_consumer import AverageSpreadConsumer, FinancialMetricConsumer
 
 
 if __name__ == '__main__':
     # Kraken asset pairs for BTC, ETH, and LTC to USD prices
     asset_pairs = ['XXBTZUSD', 'XETHZUSD', 'XLTCZUSD', 'BCHXBT']
-    methods = ['Spread']
-    topics = []
+    spread_topics = []
+    ohlc_topics = []
 
     for asset_pair in asset_pairs:
-        for method in methods:
-            topic_name = '{}_{}'.format(asset_pair, method)
-            topics.append(topic_name)
+        # Spread
+        topic_name = '{}_{}'.format(asset_pair, 'Spread')
+        spread_topics.append(topic_name)
 
     consumer = AverageSpreadConsumer()
-    consumer.consume(topics)
+    consumer.consume(spread_topics)
+
+    consumer = FinancialMetricConsumer()
+    consumer.consume(ohlc_topics)
