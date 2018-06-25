@@ -65,6 +65,7 @@ class S3Consumer:
                     break
 
             topic_name = msg.topic()
+            interval = None
             try:
                 exchange, method, interval = topic_name.split('_')
             except ValueError:
