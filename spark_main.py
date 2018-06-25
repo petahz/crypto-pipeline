@@ -1,4 +1,4 @@
-from spark_stream_consumer import AverageSpreadStreamConsumer, FinancialMetricStreamConsumer
+from spark.spark_stream_consumer import AverageSpreadStreamConsumer, FinancialMetricStreamConsumer
 
 
 if __name__ == '__main__':
