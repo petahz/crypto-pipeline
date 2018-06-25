@@ -65,7 +65,10 @@ class S3Consumer:
                     break
 
             topic_name = msg.topic()
-            exchange, method, interval = topic_name.split('_')
+            try:
+                exchange, method, interval = topic_name.split('_')
+            except ValueError:
+                exchange, method = topic_name.split('_')
 
             asset_pair = msg.key().decode()
             content = json.loads(msg.value().decode())

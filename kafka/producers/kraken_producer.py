@@ -3,6 +3,8 @@ from krakenex import API
 import json
 from pykafka import KafkaClient
 from pykafka.utils import serialize_utf8
+from requests.exceptions import HTTPError
+import time
 
 
 api = API()
@@ -63,7 +65,11 @@ class KrakenProducer:
         }
         if self.interval is not None:
             query_params['interval'] = self.interval
-        response = api.query_public(self.api_method, query_params)
+        try:
+            response = api.query_public(self.api_method, query_params)
+        except HTTPError:
+            # If we get an HTTPError, wait 20 seconds and try again
+            time.sleep(20)
 
         if len(response['error']) > 0:
             for e in response['error']:
