@@ -10,7 +10,7 @@ from config.config import KAFKA_NODES
 
 r = redis.StrictRedis(host='redis-group.v7ufhi.ng.0001.use1.cache.amazonaws.com', port=6379, db=0)
 
-
+# This needs to be defined outside of a class as it is passed in a dstream
 def set_redis(partition):
     for msg in partition:
         r.set(msg[0], msg[1])
@@ -19,16 +19,18 @@ def set_redis(partition):
 class SparkStreamConsumer:
     spark_context = None
 
-    def __init__(self):
+    def __init__(self, slide_interval=1, window_length=5):
         self.sc = SparkContext(appName=self.spark_context)
-        self.ssc = StreamingContext(self.sc, 5)
+        self.ssc = StreamingContext(self.sc, slide_interval)
+        self.slide_interval = slide_interval
+        self.window_length = window_length
 
     def consume(self):
         self.ssc.start()
         self.ssc.awaitTermination()
 
 
-class AverageSpreadConsumer(SparkStreamConsumer):
+class AverageSpreadStreamConsumer(SparkStreamConsumer):
     spark_context = 'AverageSpread'
 
     def __init__(self):
@@ -39,7 +41,7 @@ class AverageSpreadConsumer(SparkStreamConsumer):
                                                  {'metadata.broker.list': KAFKA_NODES.join('')})
 
         # messages come in [timestamp, bid, ask] format, a spread is calculated by (ask-bid)
-        parsed = self.kvs.map(lambda v: json.loads(v[1]))
+        parsed = self.kvs.window(self.window_length, self.slide_interval).map(lambda v: json.loads(v[1]))
 
         def calculate_spread(tx):
             asset_pair = tx[3]
@@ -66,10 +68,10 @@ class FinancialMetricStreamConsumer(SparkStreamConsumer):
         self.kvs = KafkaUtils.createDirectStream(self.ssc, topics,
                                                  {'metadata.broker.list': KAFKA_NODES.join('')})
 
-        # messages come in [timestamp, bid, ask] format, a spread is calculated by (ask-bid)
+        # messages come in [timestamp, open, high, low, close, vwap, volume, count] format
         parsed = self.kvs.map(lambda v: json.loads(v[1]))
 
-        def calculate_spread(tx):
+        def calculate_rsi(tx):
             asset_pair = tx[3]
             return (asset_pair, Decimal(tx[2]) - Decimal(tx[1]))
 
