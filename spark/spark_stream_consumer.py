@@ -61,8 +61,8 @@ class AverageSpreadStreamConsumer(SparkStreamConsumer):
 class FinancialMetricStreamConsumer(SparkStreamConsumer):
     spark_context = 'FinancialMetrics'
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, slide_interval=1, window_length=5):
+        super().__init__(slide_interval, window_length)
 
     def consume(self, topics):
         self.kvs = KafkaUtils.createDirectStream(self.ssc, topics,
