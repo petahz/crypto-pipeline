@@ -33,7 +33,7 @@ class SparkStreamConsumer:
 class AverageSpreadStreamConsumer(SparkStreamConsumer):
     spark_context = 'AverageSpread'
 
-    def __init__(self, slide_interval, window_length):
+    def __init__(self, slide_interval=1, window_length=5):
         super().__init__(slide_interval, window_length)
 
     def consume(self, topics):
