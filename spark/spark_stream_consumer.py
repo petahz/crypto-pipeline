@@ -33,8 +33,8 @@ class SparkStreamConsumer:
 class AverageSpreadStreamConsumer(SparkStreamConsumer):
     spark_context = 'AverageSpread'
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, slide_interval, window_length):
+        super(slide_interval, window_length).__init__()
 
     def consume(self, topics):
         self.kvs = KafkaUtils.createDirectStream(self.ssc, topics,
