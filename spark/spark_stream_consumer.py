@@ -7,13 +7,19 @@ import redis
 
 from config.config import KAFKA_NODES
 
-
+# These redis commands need to be defined outside of a class as it is passed in a dstream
 r = redis.StrictRedis(host='redis-group.v7ufhi.ng.0001.use1.cache.amazonaws.com', port=6379, db=0)
 
-# This needs to be defined outside of a class as it is passed in a dstream
-def set_redis(partition):
+
+def set_redis_avg_spread(partition):
     for msg in partition:
-        r.set(msg[0], msg[1])
+        r.hset(msg[0], 'avg_spread', msg[1])
+
+
+def set_redis_bid_ask(partition):
+    for msg in partition:
+        r.hset(msg[3], 'bid', msg[1])
+        r.hset(msg[3], 'ask', msg[2])
 
 
 class SparkStreamConsumer:
@@ -41,7 +47,8 @@ class AverageSpreadStreamConsumer(SparkStreamConsumer):
                                                  {'metadata.broker.list': 'localhost:9092'})
 
         # messages come in [timestamp, bid, ask] format, a spread is calculated by (ask-bid)
-        parsed = self.kvs.window(self.window_length, self.slide_interval).map(lambda v: json.loads(v[1]))
+        parsed = self.kvs.window(self.window_length, self.slide_interval).map(lambda v: json.loads(v[1])).cache()
+        parsed.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis_bid_ask))
 
         def calculate_spread(tx):
             asset_pair = tx[3]
@@ -53,7 +60,7 @@ class AverageSpreadStreamConsumer(SparkStreamConsumer):
 
         average_spread_dstream = spread_sum_count_dstream.mapValues(lambda x: x[0] / x[1])
 
-        average_spread_dstream.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis))
+        average_spread_dstream.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis_avg_spread))
 
         super().consume()
 
@@ -61,8 +68,9 @@ class AverageSpreadStreamConsumer(SparkStreamConsumer):
 class FinancialMetricStreamConsumer(SparkStreamConsumer):
     spark_context = 'FinancialMetrics'
 
-    def __init__(self, slide_interval=1, window_length=5):
+    def __init__(self, slide_interval=1, window_length=5, interval=None):
         super().__init__(slide_interval, window_length)
+        self.interval = interval
 
     def consume(self, topics):
         self.kvs = KafkaUtils.createDirectStream(self.ssc, topics,
@@ -75,7 +83,7 @@ class FinancialMetricStreamConsumer(SparkStreamConsumer):
             asset_pair = tx[3]
             return (asset_pair, Decimal(tx[2]) - Decimal(tx[1]))
 
-        spread_percentage_dstream = parsed.map(calculate_spread).mapValues(lambda x: (x, 1))
+        spread_percentage_dstream = parsed.map(calculate_rsi).mapValues(lambda x: (x, 1))
 
         spread_sum_count_dstream = spread_percentage_dstream.reduceByKey(lambda x, y: (x[0]+y[0], x[1]+y[1]))
 

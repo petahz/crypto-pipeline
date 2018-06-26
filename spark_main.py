@@ -15,10 +15,8 @@ if __name__ == '__main__':
 
         for interval in intervals:
             topic_name = '{}_{}_{}'.format(asset_pair, 'OHLC', interval)
-            ohlc_topics.append(topic_name)
+            consumer = FinancialMetricStreamConsumer(interval)
+            # consumer.consume(ohlc_topics)
 
     consumer = AverageSpreadStreamConsumer()
     consumer.consume(spread_topics)
-
-    # consumer = FinancialMetricStreamConsumer()
-    # consumer.consume(ohlc_topics)
