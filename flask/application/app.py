@@ -19,7 +19,6 @@ def test_connect():
 @socketio.on('next')
 def next_data(success):
     print('next_data')
-    time.sleep(1)
     data = {}
     for key in r.scan_iter():
         if r.type(key) == b'hash':
