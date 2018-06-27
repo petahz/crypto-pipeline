@@ -19,3 +19,4 @@ if __name__ == '__main__':
 
     consumer = SparkStreamConsumer()
     consumer.consume_spreads(spread_topics)
+    consumer.start_stream()
