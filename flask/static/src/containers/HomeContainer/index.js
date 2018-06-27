@@ -5,13 +5,14 @@ import openSocket from 'socket.io-client';
 import { Home } from '../../components/Home';
 
 
+console.log('open socket');
+const socket = openSocket('http://ec2-54-156-187-154.compute-1.amazonaws.com:5000');
+
 export class HomeContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {liveData: {}};
 
-        console.log('open socket');
-        const socket = openSocket('http://ec2-54-156-187-154.compute-1.amazonaws.com:5000');
         socket.emit('next', {success: true});
         socket.on('liveData', (data) => {
             console.log('received new data: ', data);
