@@ -15,13 +15,14 @@ socketio = SocketIO(app)
 @socketio.on('connect')
 def test_connect():
     print('someone connected to websocket')
-    while True:
-        time.sleep(1)
-        data = {}
-        for key in r.scan_iter():
-            if r.type(key) == b'hash':
-                data[key] = r.hgetall(key)
-        emit('liveData', data)
+
+    time.sleep(1)
+    data = {}
+    for key in r.scan_iter():
+        print('key: ', key)
+        if r.type(key) == b'hash':
+            data[key.decode()] = r.hgetall(key)
+    emit('liveData', data)
 
 @app.route('/', methods=['GET'])
 def index():
