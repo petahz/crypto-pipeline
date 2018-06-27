@@ -88,7 +88,10 @@ class KrakenProducer:
             for data in result[self.asset_pair]:
                 # Trigger any available delivery report callbacks from previous produce() calls
                 p.poll(0)
-                data.append(self.asset_pair)
+                try:
+                    data.append(self.asset_pair)
+                except AttributeError:
+                    print('data: ', data)
 
                 message = json.dumps(data)
 
