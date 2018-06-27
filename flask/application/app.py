@@ -11,14 +11,7 @@ r = redis.StrictRedis(host='redis-group.v7ufhi.ng.0001.use1.cache.amazonaws.com'
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
-# Handle the webapp connecting to the websocket
-@socketio.on('connect')
-def test_connect():
-    print('someone connected to websocket')
-
-@socketio.on('next')
-def next_data(success):
-    print('next_data')
+def emit_data_from_redis():
     data = {}
     for key in r.scan_iter():
         if r.type(key) == b'hash':
@@ -30,6 +23,17 @@ def next_data(success):
             }
     print('data: ', data)
     emit('liveData', data)
+
+# Handle the webapp connecting to the websocket
+@socketio.on('connect')
+def test_connect():
+    print('someone connected to websocket')
+    emit_data_from_redis()
+
+@socketio.on('next')
+def next_data(success):
+    print('next_data')
+    emit_data_from_redis()
 
 @app.route('/', methods=['GET'])
 def index():
