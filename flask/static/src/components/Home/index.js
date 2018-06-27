@@ -37,7 +37,7 @@ export class Home extends React.Component {
                     <TableRow>
                         <TableRowColumn>EOS</TableRowColumn>
                         <TableRowColumn>{this.props.liveData['EOSUSD'].bid}</TableRowColumn>
-                        <TableRowColumn>{this.props.liveData['XEOSZUSD'].ask}</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['EOSUSD'].ask}</TableRowColumn>
                         <TableRowColumn>{this.props.liveData['EOSUSD'].spread}</TableRowColumn>
                     </TableRow>
                     <TableRow>
