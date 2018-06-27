@@ -15,7 +15,8 @@ while True:
     time.sleep(1)
     data = {}
     for key in r.scan_iter():
-        data[key] = r.hgetall(key)
+        if r.type(key) == 'hash':
+            data[key] = r.hgetall(key)
     emit('liveData', data)
 
 # Handle the webapp connecting to the websocket
