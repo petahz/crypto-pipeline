@@ -16,17 +16,19 @@ socketio = SocketIO(app)
 def test_connect():
     print('someone connected to websocket')
 
-    data = {}
-    for key in r.scan_iter():
-        if r.type(key) == b'hash':
-            data[key.decode()] = {
-                'bid': r.hget(key, 'bid').decode(),
-                'ask': r.hget(key, 'ask').decode(),
-                'spread': r.hget(key, 'spread').decode() if r.hget(key, 'spread') is not None else None,
-                'avg_spread': r.hget(key, 'avg_spread').decode(),
-            }
-    print('data: ', data)
-    emit('liveData', data)
+    while True:
+        time.sleep(1)
+        data = {}
+        for key in r.scan_iter():
+            if r.type(key) == b'hash':
+                data[key.decode()] = {
+                    'bid': r.hget(key, 'bid').decode(),
+                    'ask': r.hget(key, 'ask').decode(),
+                    'spread': r.hget(key, 'spread').decode() if r.hget(key, 'spread') is not None else None,
+                    'avg_spread': r.hget(key, 'avg_spread').decode(),
+                }
+        print('data: ', data)
+        emit('liveData', data)
 
 @app.route('/', methods=['GET'])
 def index():
