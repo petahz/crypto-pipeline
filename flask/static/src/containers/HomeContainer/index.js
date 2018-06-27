@@ -28,4 +28,4 @@ class HomeContainer extends React.Component {
     }
 }
 
-export const HomeContainer = HomeContainer
+export HomeContainer
