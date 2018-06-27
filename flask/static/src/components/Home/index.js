@@ -36,9 +36,9 @@ export class Home extends React.Component {
                     </TableRow>
                     <TableRow>
                         <TableRowColumn>EOS</TableRowColumn>
-                        <TableRowColumn>{this.props.liveData['XEOSZUSD'].bid}</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['EOSUSD'].bid}</TableRowColumn>
                         <TableRowColumn>{this.props.liveData['XEOSZUSD'].ask}</TableRowColumn>
-                        <TableRowColumn>{this.props.liveData['XEOSZUSD'].spread}</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['EOSUSD'].spread}</TableRowColumn>
                     </TableRow>
                     <TableRow>
                         <TableRowColumn>Litecoin</TableRowColumn>
@@ -48,9 +48,9 @@ export class Home extends React.Component {
                     </TableRow>
                     <TableRow>
                         <TableRowColumn>Bitcoin Cash</TableRowColumn>
-                        <TableRowColumn>{this.props.liveData['XBCHZUSD'].bid}</TableRowColumn>
-                        <TableRowColumn>{this.props.liveData['XBCHZUSD'].ask}</TableRowColumn>
-                        <TableRowColumn>{this.props.liveData['XBCHZUSD'].spread}</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['BCHUSD'].bid}</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['BCHUSD'].ask}</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['BCHUSD'].spread}</TableRowColumn>
                     </TableRow>
                 </TableBody>
             </Table>
