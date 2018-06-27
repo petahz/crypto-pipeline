@@ -10,20 +10,19 @@ from .utils.auth import generate_token, requires_auth, verify_token
 r = redis.StrictRedis(host='redis-group.v7ufhi.ng.0001.use1.cache.amazonaws.com', port=6379, db=0)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
-
-while True:
-    time.sleep(1)
-    data = {}
-    for key in r.scan_iter():
-        if r.type(key) == b'hash':
-            data[key] = r.hgetall(key)
-    emit('liveData', data)
+socketio.run(app)
 
 # Handle the webapp connecting to the websocket
 @socketio.on('connect')
 def test_connect():
     print('someone connected to websocket')
-    emit('responseMessage', {'data': 'Connected! ayy'})
+    while True:
+        time.sleep(1)
+        data = {}
+        for key in r.scan_iter():
+            if r.type(key) == b'hash':
+                data[key] = r.hgetall(key)
+        emit('liveData', data)
 
 @app.route('/', methods=['GET'])
 def index():
