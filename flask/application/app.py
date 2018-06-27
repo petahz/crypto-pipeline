@@ -13,10 +13,9 @@ socketio = SocketIO(app)
 
 while True:
     time.sleep(1)
-    keys = r.keys()
     data = {}
-    for key in keys:
-        data[key] = r.get(key)
+    for key in r.scan_iter():
+        data[key] = r.hgetall(key)
     emit('liveData', data)
 
 # Handle the webapp connecting to the websocket
