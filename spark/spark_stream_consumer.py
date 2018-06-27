@@ -26,26 +26,18 @@ class SparkStreamConsumer:
     spark_context = None
 
     def __init__(self, slide_interval=1, window_length=5):
-        self.sc = SparkContext(appName=self.spark_context)
+        self.sc = SparkContext(appName='SparkStream')
         self.ssc = StreamingContext(self.sc, slide_interval)
         self.slide_interval = slide_interval
         self.window_length = window_length
 
-    def consume(self):
+    def start_stream(self):
         self.ssc.start()
         self.ssc.awaitTermination()
 
-
-class AverageSpreadStreamConsumer(SparkStreamConsumer):
-    spark_context = 'AverageSpread'
-
-    def __init__(self, slide_interval=1, window_length=5):
-        super().__init__(slide_interval, window_length)
-
-    def consume(self, topics):
-        self.kvs = KafkaUtils.createDirectStream(self.ssc, topics,
+    def consume_spreads(self, spread_topics):
+        self.kvs = KafkaUtils.createDirectStream(self.ssc, spread_topics,
                                                  {'metadata.broker.list': 'localhost:9092'})
-
         # messages come in [timestamp, bid, ask] format, a spread is calculated by (ask-bid)
         parsed = self.kvs.window(self.window_length, self.slide_interval).map(lambda v: json.loads(v[1])).cache()
         parsed.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis_bid_ask))
@@ -56,24 +48,14 @@ class AverageSpreadStreamConsumer(SparkStreamConsumer):
 
         spread_percentage_dstream = parsed.map(calculate_spread).mapValues(lambda x: (x, 1))
 
-        spread_sum_count_dstream = spread_percentage_dstream.reduceByKey(lambda x, y: (x[0]+y[0], x[1]+y[1]))
+        spread_sum_count_dstream = spread_percentage_dstream.reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1]))
 
         average_spread_dstream = spread_sum_count_dstream.mapValues(lambda x: x[0] / x[1])
 
         average_spread_dstream.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis_avg_spread))
 
-        super().consume()
-
-
-class FinancialMetricStreamConsumer(SparkStreamConsumer):
-    spark_context = 'FinancialMetrics'
-
-    def __init__(self, slide_interval=1, window_length=5, interval=None):
-        super().__init__(slide_interval, window_length)
-        self.interval = interval
-
-    def consume(self, topics):
-        self.kvs = KafkaUtils.createDirectStream(self.ssc, topics,
+    def consume_ohlc(self, ohlc_topics):
+        self.kvs = KafkaUtils.createDirectStream(self.ssc, ohlc_topics,
                                                  {'metadata.broker.list': KAFKA_NODES.join('')})
 
         # messages come in [timestamp, open, high, low, close, vwap, volume, count] format
@@ -85,10 +67,8 @@ class FinancialMetricStreamConsumer(SparkStreamConsumer):
 
         spread_percentage_dstream = parsed.map(calculate_rsi).mapValues(lambda x: (x, 1))
 
-        spread_sum_count_dstream = spread_percentage_dstream.reduceByKey(lambda x, y: (x[0]+y[0], x[1]+y[1]))
+        spread_sum_count_dstream = spread_percentage_dstream.reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1]))
 
         average_spread_dstream = spread_sum_count_dstream.mapValues(lambda x: x[0] / x[1])
 
         average_spread_dstream.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis_avg_spread))
-
-        super().consume()

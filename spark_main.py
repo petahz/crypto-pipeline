@@ -1,5 +1,4 @@
-from spark.spark_stream_consumer import AverageSpreadStreamConsumer, FinancialMetricStreamConsumer
-
+from spark.spark_stream_consumer import SparkStreamConsumer
 
 if __name__ == '__main__':
     # Kraken asset pairs for BTC, ETH, and LTC to USD prices
@@ -15,8 +14,8 @@ if __name__ == '__main__':
 
         for interval in intervals:
             topic_name = '{}_{}_{}'.format(asset_pair, 'OHLC', interval)
-            consumer = FinancialMetricStreamConsumer(interval)
+            # consumer = FinancialMetricStreamConsumer(interval)
             # consumer.consume(ohlc_topics)
 
-    consumer = AverageSpreadStreamConsumer()
-    consumer.consume(spread_topics)
+    consumer = SparkStreamConsumer()
+    consumer.consume_spreads(spread_topics)
