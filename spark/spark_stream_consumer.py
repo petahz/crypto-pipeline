@@ -40,7 +40,7 @@ class SparkStreamConsumer:
                                                  {'metadata.broker.list': 'localhost:9092'})
         # messages come in [timestamp, bid, ask] format, a spread is calculated by (ask-bid)
         parsed = self.kvs.map(lambda v: json.loads(v[1])).cache()
-        parsed.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis_bid_ask))
+        # parsed.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis_bid_ask))
 
         def calculate_spread(tx):
             asset_pair = tx[3]
