@@ -11,11 +11,13 @@ export class HomeContainer extends React.Component {
         this.state = {liveData: {}};
 
         const socket = openSocket('http://ec2-54-156-187-154.compute-1.amazonaws.com:5000');
+        socket.emit('next', {success: true});
         socket.on('liveData', (data) => {
             console.log('received new data: ', data);
             this.setState({
               liveData: data
             });
+            socket.emit('next', {success: true});
         });
     }
     render() {
