@@ -17,7 +17,7 @@ def test_connect():
     print('someone connected to websocket')
 
 @socketio.on('next')
-def next_data():
+def next_data(success):
     print('next_data')
     time.sleep(1)
     data = {}
