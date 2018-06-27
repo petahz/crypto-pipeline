@@ -27,7 +27,7 @@ class SparkStreamConsumer:
 
     def __init__(self, slide_interval=1, window_length=5):
         self.sc = SparkContext(appName='SparkStream')
-        self.ssc = StreamingContext(self.sc, slide_interval)
+        self.ssc = StreamingContext(self.sc, 5)
         self.slide_interval = slide_interval
         self.window_length = window_length
 
@@ -51,6 +51,8 @@ class SparkStreamConsumer:
         spread_sum_count_dstream = spread_percentage_dstream.reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1]))
 
         average_spread_dstream = spread_sum_count_dstream.mapValues(lambda x: x[0] / x[1])
+
+        average_spread_dstream.pprint()
 
         average_spread_dstream.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis_avg_spread))
 
