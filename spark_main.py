@@ -13,7 +13,7 @@ if __name__ == '__main__':
         spread_topics.append(topic_name)
 
         for interval in intervals:
-            topic_name = '{}_{}_{}'.format('Kraken', 'OHLC', interval)
+            # topic_name = '{}_{}_{}'.format('Kraken', 'OHLC', interval)
             # consumer = FinancialMetricStreamConsumer(interval)
             # consumer.consume(ohlc_topics)
 
