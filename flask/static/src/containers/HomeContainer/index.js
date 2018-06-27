@@ -5,8 +5,7 @@ import openSocket from 'socket.io-client';
 import { Home } from '../../components/Home';
 
 
-
-class HomeContainer extends React.Component {
+export class HomeContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {liveData: {}};
@@ -27,5 +26,3 @@ class HomeContainer extends React.Component {
         );
     }
 }
-
-export HomeContainer
