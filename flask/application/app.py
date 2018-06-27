@@ -19,13 +19,13 @@ def test_connect():
     time.sleep(1)
     data = {}
     for key in r.scan_iter():
-        print('key: ', key)
         if r.type(key) == b'hash':
-            data[key] = {
+            data[key.decode()] = {
                 'bid': r.hget(key, 'bid').decode(),
                 'ask': r.hget(key, 'ask').decode(),
                 'spread': r.hget(key, 'avg_spread').decode()
             }
+    print('data: ', data)
     emit('liveData', data)
 
 @app.route('/', methods=['GET'])
