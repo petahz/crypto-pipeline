@@ -16,7 +16,6 @@ socketio = SocketIO(app)
 def test_connect():
     print('someone connected to websocket')
 
-    time.sleep(1)
     data = {}
     for key in r.scan_iter():
         if r.type(key) == b'hash':

@@ -30,23 +30,27 @@ export class Home extends React.Component {
                     </TableRow>
                     <TableRow>
                         <TableRowColumn>Ethereum</TableRowColumn>
-                        <TableRowColumn>65</TableRowColumn>
-                        <TableRowColumn>Neutral</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['XETHZUSD'].bid}</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['XETHZUSD'].ask}</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['XETHZUSD'].spread}</TableRowColumn>
                     </TableRow>
                     <TableRow>
                         <TableRowColumn>EOS</TableRowColumn>
-                        <TableRowColumn>88</TableRowColumn>
-                        <TableRowColumn>Sell</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['XEOSZUSD'].bid}</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['XEOSZUSD'].ask}</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['XEOSZUSD'].spread}</TableRowColumn>
                     </TableRow>
                     <TableRow>
                         <TableRowColumn>Litecoin</TableRowColumn>
-                        <TableRowColumn>45</TableRowColumn>
-                        <TableRowColumn>Neutral</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['XLTCZUSD'].bid}</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['XLTCZUSD'].ask}</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['XLTCZUSD'].spread}</TableRowColumn>
                     </TableRow>
                     <TableRow>
                         <TableRowColumn>Bitcoin Cash</TableRowColumn>
-                        <TableRowColumn>54</TableRowColumn>
-                        <TableRowColumn>Neutral</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['XBCHZUSD'].bid}</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['XBCHZUSD'].ask}</TableRowColumn>
+                        <TableRowColumn>{this.props.liveData['XBCHZUSD'].spread}</TableRowColumn>
                     </TableRow>
                 </TableBody>
             </Table>
