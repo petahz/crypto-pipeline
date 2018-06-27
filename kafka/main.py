@@ -12,7 +12,7 @@ def start_kraken_producer():
             print('Error: ', e)
     else:
         # Kraken asset pairs for BTC, ETH, and LTC to USD prices
-        asset_pairs = response['result'].keys()
+        asset_pairs = [asset_pair for asset_pair in response['result'].keys() if 'USD' in asset_pair]
         methods = ['Spread']
         intervals = [1, 5, 15, 30, 60, 240, 1440, 10080, 21600]
         producers = []

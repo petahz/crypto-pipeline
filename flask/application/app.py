@@ -15,7 +15,7 @@ while True:
     time.sleep(1)
     data = {}
     for key in r.scan_iter():
-        if r.type(key) == 'hash':
+        if r.type(key) == b'hash':
             data[key] = r.hgetall(key)
     emit('liveData', data)
 
