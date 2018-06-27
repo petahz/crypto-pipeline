@@ -33,6 +33,7 @@ def test_connect():
 @socketio.on('next')
 def next_data(success):
     print('next_data')
+    time.sleep(1)
     emit_data_from_redis()
 
 @app.route('/', methods=['GET'])
