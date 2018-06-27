@@ -14,17 +14,17 @@ export const Home = () => (
     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
       <TableRow>
         <TableHeaderColumn>Name</TableHeaderColumn>
-        <TableHeaderColumn>Bid/Ask Spread</TableHeaderColumn>
-        <TableHeaderColumn>Relative Strength Indicator</TableHeaderColumn>
-        <TableHeaderColumn>Trade Recommendation</TableHeaderColumn>
+        <TableHeaderColumn>Bid</TableHeaderColumn>
+        <TableHeaderColumn>Ask</TableHeaderColumn>
+        <TableHeaderColumn>Avg Spread</TableHeaderColumn>
       </TableRow>
     </TableHeader>
     <TableBody displayRowCheckbox={false}>
       <TableRow>
         <TableRowColumn>Bitcoin</TableRowColumn>
-        <TableRowColumn>20</TableRowColumn>
-        <TableRowColumn>20</TableRowColumn>
-        <TableRowColumn>Buy</TableRowColumn>
+        <TableRowColumn>{this.props.liveData['XXBTZUSD'].bid}</TableRowColumn>
+        <TableRowColumn>{this.props.liveData['XXBTZUSD'].ask}</TableRowColumn>
+        <TableRowColumn>{this.props.liveData['XXBTZUSD'].spread}</TableRowColumn>
       </TableRow>
       <TableRow>
         <TableRowColumn>Ethereum</TableRowColumn>
