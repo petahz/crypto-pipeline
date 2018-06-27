@@ -22,7 +22,7 @@ def test_connect():
             data[key.decode()] = {
                 'bid': r.hget(key, 'bid').decode(),
                 'ask': r.hget(key, 'ask').decode(),
-                'spread': r.hget(key, 'spread').decode(),
+                'spread': r.hget(key, 'spread').decode() if r.hget(key, 'spread') is not None else None,
                 'avg_spread': r.hget(key, 'avg_spread').decode(),
             }
     print('data: ', data)
