@@ -9,11 +9,11 @@ if __name__ == '__main__':
 
     for asset_pair in asset_pairs:
         # Spread
-        topic_name = '{}_{}'.format(asset_pair, 'Spread')
+        topic_name = '{}_{}'.format('Kraken', 'Spread')
         spread_topics.append(topic_name)
 
         for interval in intervals:
-            topic_name = '{}_{}_{}'.format(asset_pair, 'OHLC', interval)
+            topic_name = '{}_{}_{}'.format('Kraken', 'OHLC', interval)
             # consumer = FinancialMetricStreamConsumer(interval)
             # consumer.consume(ohlc_topics)
 
