@@ -22,7 +22,8 @@ def test_connect():
             data[key.decode()] = {
                 'bid': r.hget(key, 'bid').decode(),
                 'ask': r.hget(key, 'ask').decode(),
-                'spread': r.hget(key, 'avg_spread').decode()
+                'spread': r.hget(key, 'spread').decode(),
+                'avg_spread': r.hget(key, 'avg_spread').decode(),
             }
     print('data: ', data)
     emit('liveData', data)

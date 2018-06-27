@@ -20,6 +20,7 @@ def set_redis_bid_ask(partition):
     for msg in partition:
         r.hset(msg[3], 'bid', msg[1])
         r.hset(msg[3], 'ask', msg[2])
+        r.hset(msg[3], 'spread', Decimal(msg[2]) - Decimal(msg[1]))
 
 
 class SparkStreamConsumer:
