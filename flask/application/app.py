@@ -9,7 +9,7 @@ from .utils.auth import generate_token, requires_auth, verify_token
 
 r = redis.StrictRedis(host='redis-group.v7ufhi.ng.0001.use1.cache.amazonaws.com', port=6379, db=0)
 
-
+socketio = SocketIO(app)
 def emit_data_from_redis():
     data = {}
     for key in r.scan_iter():
