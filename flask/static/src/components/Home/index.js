@@ -33,7 +33,7 @@ export class Home extends React.Component {
                 <TableBody if={this.props.liveData} displayRowCheckbox={false}>
                     { Object.keys(this.props.liveData).map((assetPair, index) => {
                         const values = this.props.liveData[assetPair];
-                        return (<TableRow key={index}>
+                        return (<TableRow key={index} if={mapper[assetPair]}>
                             <TableRowColumn>{mapper[assetPair]}</TableRowColumn>
                             <TableRowColumn>{values && values.bid}</TableRowColumn>
                             <TableRowColumn>{values && values.ask}</TableRowColumn>
