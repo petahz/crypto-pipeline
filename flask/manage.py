@@ -18,4 +18,4 @@ def create_db():
 
 if __name__ == '__main__':
     app.config['SECRET_KEY'] = 'secret!'
-    socketio.run()
+    socketio.run(app)
