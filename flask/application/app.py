@@ -10,6 +10,7 @@ from .utils.auth import generate_token, requires_auth, verify_token
 r = redis.StrictRedis(host='redis-group.v7ufhi.ng.0001.use1.cache.amazonaws.com', port=6379, db=0)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
+socketio.run(app)
 
 def emit_data_from_redis():
     data = {}
