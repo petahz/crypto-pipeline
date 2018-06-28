@@ -34,7 +34,7 @@ export class Home extends React.Component {
                     { Object.keys(this.props.liveData).map((assetPair, index) => {
                         const values = this.props.liveData[assetPair];
                         return (<TableRow key={index}>
-                            <TableRowColumn>{mapper(assetPair)}</TableRowColumn>
+                            <TableRowColumn>{mapper[assetPair]}</TableRowColumn>
                             <TableRowColumn>{values && values.bid}</TableRowColumn>
                             <TableRowColumn>{values && values.ask}</TableRowColumn>
                             <TableRowColumn>{values && values.spread}</TableRowColumn>
