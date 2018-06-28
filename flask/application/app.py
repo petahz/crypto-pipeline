@@ -10,7 +10,6 @@ from .utils.auth import generate_token, requires_auth, verify_token
 r = redis.StrictRedis(host='redis-group.v7ufhi.ng.0001.use1.cache.amazonaws.com', port=6379, db=0)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
-socketio.run(app)
 
 def emit_data_from_redis():
     data = {}
@@ -94,3 +93,6 @@ def is_token_valid():
         return jsonify(token_is_valid=True)
     else:
         return jsonify(token_is_valid=False), 403
+
+if __name__ == '__main__':
+    socketio.run()
