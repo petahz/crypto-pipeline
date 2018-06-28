@@ -38,7 +38,10 @@ export class Home extends React.Component {
                                 <TableRowColumn>{mapper[assetPair]}</TableRowColumn>
                                 <TableRowColumn>{values && values.bid}</TableRowColumn>
                                 <TableRowColumn>{values && values.ask}</TableRowColumn>
-                                <TableRowColumn>{values && values.spread}</TableRowColumn>
+                                <TableRowColumn
+                                className={if (values.spread < values.avg_spread) ? 'positive-green' : 'negative-red'}>
+                                    {values && values.spread}
+                                </TableRowColumn>
                                 <TableRowColumn>{values && values.avg_spread}</TableRowColumn>
                             </TableRow>)
                         }
