@@ -1,4 +1,4 @@
-from spark_stream_consumer import SparkStreamConsumer
+from spark.spark_stream_consumer import SparkStreamConsumer
 
 if __name__ == '__main__':
     # Kraken asset pairs for BTC, ETH, and LTC to USD prices
