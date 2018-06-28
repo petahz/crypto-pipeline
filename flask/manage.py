@@ -1,6 +1,6 @@
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
-
+from flask_socketio import SocketIO
 from application.app import app, db
 
 migrate = Migrate(app, db)
@@ -17,4 +17,6 @@ def create_db():
 
 
 if __name__ == '__main__':
-    manager.run()
+    app.config['SECRET_KEY'] = 'secret!'
+    socketio = SocketIO(app)
+    socketio.run()
