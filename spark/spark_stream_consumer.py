@@ -5,7 +5,6 @@ from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 import redis
 
-from config.config import KAFKA_NODES
 
 # These redis commands need to be defined outside of a class as it is passed in a dstream
 r = redis.StrictRedis(host='redis-group.v7ufhi.ng.0001.use1.cache.amazonaws.com', port=6379, db=0)
@@ -57,7 +56,7 @@ class SparkStreamConsumer:
 
     def consume_ohlc(self, ohlc_topics):
         self.kvs = KafkaUtils.createDirectStream(self.ssc, ohlc_topics,
-                                                 {'metadata.broker.list': KAFKA_NODES.join('')})
+                                                 {'metadata.broker.list': 'localhost:9092'})
 
         # messages come in [timestamp, open, high, low, close, vwap, volume, count] format
         parsed = self.kvs.map(lambda v: json.loads(v[1]))
