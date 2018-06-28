@@ -6,7 +6,7 @@ import { Home } from '../../components/Home';
 
 
 console.log('open socket');
-const socket = openSocket('http://localhost:5000');
+const socket = openSocket('http://ec2-54-156-187-154.compute-1.amazonaws.com:5000');
 
 export class HomeContainer extends React.Component {
     constructor(props) {
