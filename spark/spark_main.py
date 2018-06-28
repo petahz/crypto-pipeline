@@ -12,11 +12,6 @@ if __name__ == '__main__':
         topic_name = '{}_{}'.format('Kraken', 'Spread')
         spread_topics.append(topic_name)
 
-        # for interval in intervals:
-            # topic_name = '{}_{}_{}'.format('Kraken', 'OHLC', interval)
-            # consumer = FinancialMetricStreamConsumer(interval)
-            # consumer.consume(ohlc_topics)
-
     consumer = SparkStreamConsumer()
     consumer.consume_spreads(spread_topics)
     consumer.start_stream()
