@@ -33,13 +33,15 @@ export class Home extends React.Component {
                 <TableBody if={this.props.liveData} displayRowCheckbox={false}>
                     { Object.keys(this.props.liveData).map((assetPair, index) => {
                         const values = this.props.liveData[assetPair];
-                        return (<TableRow key={index} if={typeof(mapper[assetPair]) !== 'undefined'}>
-                            <TableRowColumn>{mapper[assetPair]}</TableRowColumn>
-                            <TableRowColumn>{values && values.bid}</TableRowColumn>
-                            <TableRowColumn>{values && values.ask}</TableRowColumn>
-                            <TableRowColumn>{values && values.spread}</TableRowColumn>
-                            <TableRowColumn>{values && values.avg_spread}</TableRowColumn>
-                        </TableRow>)
+                        if (typeof(mapper[assetPair]) !== 'undefined') {
+                            return (<TableRow key={index}>
+                                <TableRowColumn>{mapper[assetPair]}</TableRowColumn>
+                                <TableRowColumn>{values && values.bid}</TableRowColumn>
+                                <TableRowColumn>{values && values.ask}</TableRowColumn>
+                                <TableRowColumn>{values && values.spread}</TableRowColumn>
+                                <TableRowColumn>{values && values.avg_spread}</TableRowColumn>
+                            </TableRow>)
+                        }
                     }) }
                 </TableBody>
             </Table>
