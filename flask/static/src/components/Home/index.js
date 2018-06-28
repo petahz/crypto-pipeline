@@ -30,8 +30,8 @@ export class Home extends React.Component {
                         <TableHeaderColumn>Avg Spread</TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
-                <TableBody displayRowCheckbox={false}>
-                    { this.props.liveData.map((assetPair, index) => {
+                <TableBody if={this.props.liveData} displayRowCheckbox={false}>
+                    { Object.keys(this.props.liveData).map((assetPair, index) => {
                         const values = this.props.liveData[assetPair];
                         return (<TableRow key={index}>
                             <TableRowColumn>{mapper(assetPair)}</TableRowColumn>
