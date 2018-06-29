@@ -13,6 +13,7 @@
 
 .flash-update-grey {
     background-color: #757575 !important;
+    transition: background-color 500ms linear;
 }
 
 @keyframes background {

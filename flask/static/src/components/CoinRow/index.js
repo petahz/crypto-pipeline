@@ -25,13 +25,11 @@ export class CoinRow extends React.Component {
             changes.avg_spread = true;
         }
 
-        setTimeout(() => {
-            changes = {
-                bid: false,
-                ask: false,
-                avg_spread: false,
-            };
-        }, 1000);
+        changes = {
+            bid: false,
+            ask: false,
+            avg_spread: false,
+        };
     }
 
     shouldComponentUpdate(nextProps) {
