@@ -8,6 +8,9 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 
+/* components */
+import { CoinRow } from '../CoinRow';
+
 
 export class Home extends React.Component {
     render() {
@@ -34,16 +37,7 @@ export class Home extends React.Component {
                     { Object.keys(this.props.liveData).map((assetPair, index) => {
                         const values = this.props.liveData[assetPair];
                         if (typeof(mapper[assetPair]) !== 'undefined') {
-                            return (<TableRow key={index}>
-                                <TableRowColumn>{mapper[assetPair]}</TableRowColumn>
-                                <TableRowColumn>{values && values.bid}</TableRowColumn>
-                                <TableRowColumn>{values && values.ask}</TableRowColumn>
-                                <TableRowColumn
-                                className={values.spread < values.avg_spread ? 'positive-green' : 'negative-red'}>
-                                    {values && values.spread}
-                                </TableRowColumn>
-                                <TableRowColumn>{values && values.avg_spread}</TableRowColumn>
-                            </TableRow>)
+                            return (<CoinRow id={index} coinName={mapper[assetPair]} values={values}/>)
                         }
                     }) }
                 </TableBody>
