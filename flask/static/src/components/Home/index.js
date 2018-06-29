@@ -37,7 +37,7 @@ export class Home extends React.Component {
                     { Object.keys(this.props.liveData).map((assetPair, index) => {
                         const values = this.props.liveData[assetPair];
                         if (typeof(mapper[assetPair]) !== 'undefined') {
-                            return (<CoinRow id={index} coinName={mapper[assetPair]} values={values}/>)
+                            return (<CoinRow key={index} coinName={mapper[assetPair]} values={values}/>)
                         }
                     }) }
                 </TableBody>

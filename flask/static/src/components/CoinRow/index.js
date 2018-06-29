@@ -40,7 +40,7 @@ export class CoinRow extends React.Component {
 
     render() {
         return (
-            <TableRow key={this.props.id}>
+            <TableRow>
                 <TableRowColumn>{this.props.coinName}</TableRowColumn>
                 <TableRowColumn className={changes.bid ? 'flash-update-grey' : ''}>{this.props.values && this.props.values.bid}</TableRowColumn>
                 <TableRowColumn className={changes.ask ? 'flash-update-grey' : ''}>{this.props.values && this.props.values.ask}</TableRowColumn>
