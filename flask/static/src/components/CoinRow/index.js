@@ -13,6 +13,12 @@ let changes = {
 
 export class CoinRow extends React.Component {
     componentWillReceiveProps(nextProps) {
+        changes = {
+            bid: false,
+            ask: false,
+            avg_spread: false,
+        };
+
         if (this.props.values.bid !== nextProps.values.bid) {
             changes.bid = true;
         }
@@ -24,12 +30,6 @@ export class CoinRow extends React.Component {
         if (this.props.values.avg_spread !== nextProps.values.avg_spread) {
             changes.avg_spread = true;
         }
-
-        changes = {
-            bid: false,
-            ask: false,
-            avg_spread: false,
-        };
     }
 
     shouldComponentUpdate(nextProps) {
