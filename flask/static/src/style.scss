@@ -12,6 +12,11 @@
 }
 
 .flash-update-grey {
-    background-color: #757575;
-    transition: background-color 500ms linear;
+    animation: background 1s cubic-bezier(1,0,0,1) infinite;
+}
+
+@keyframes background {
+  0% { background-color: inherit; }
+  50% { background-color: #757575 !important; }
+  100% { background-color: inherit; }
 }
