@@ -39,20 +39,24 @@ class SparkStreamConsumer:
     def consume_spreads(self, spread_topics):
         self.kvs = KafkaUtils.createDirectStream(self.ssc, spread_topics,
                                                  {'metadata.broker.list': ','.join(KAFKA_NODES)})
-        # messages come in [timestamp, bid, ask] format, a spread is calculated by (ask-bid)
+        # messages come in [timestamp, bid, ask] format
         parsed = self.kvs.window(self.window_length, self.slide_interval).map(lambda v: json.loads(v[1])).cache()
+
+        # set the current bid and ask prices in Redis
         parsed.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis_bid_ask))
 
+        # calculate the spread of each transaction and append a count value
+        # input: [timestamp, bid, ask, asset_pair] output: (asset_pair, spread, 1)
         def calculate_spread(tx):
             asset_pair = tx[3]
-            return (asset_pair, Decimal(tx[2]) - Decimal(tx[1]))
+            return (asset_pair, Decimal(tx[2]) - Decimal(tx[1]), 1)
 
-        spread_percentage_dstream = parsed.map(calculate_spread).mapValues(lambda x: (x, 1))
+        spread_percentage_dstream = parsed.map(calculate_spread)
 
+        # sum the spreads and the counts per key, output: (asset_pair, total_spread, total_count)
         spread_sum_count_dstream = spread_percentage_dstream.reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1]))
 
+        # determine the average by dividing the two sums, output: (asset_pair, avg_spread)
         average_spread_dstream = spread_sum_count_dstream.mapValues(lambda x: x[0] / x[1])
-
-        average_spread_dstream.pprint()
 
         average_spread_dstream.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis_avg_spread))
