@@ -6,8 +6,8 @@ from pyspark.streaming.kafka import KafkaUtils
 import redis
 
 
-KAFKA_NODES = ['ec2-52-44-121-53.compute-1.amazonaws.com:9092', 'ec2-52-22-234-28.compute-1.amazonaws.com:9092',
-                 'ec2-52-45-23-147.compute-1.amazonaws.com:9092', 'ec2-18-207-65-150.compute-1.amazonaws.com:9092']
+KAFKA_NODES = ['ec2-34-233-220-40.compute-1.amazonaws.com:9092', 'ec2-35-170-216-253.compute-1.amazonaws.com:9092',
+               'ec2-34-235-103-8.compute-1.amazonaws.com:9092', 'ec2-52-207-23-179.compute-1.amazonaws.com:9092']
 
 # These redis commands need to be defined outside of a class as it is passed in a dstream
 r = redis.StrictRedis(host='redis-group.v7ufhi.ng.0001.use1.cache.amazonaws.com', port=6379, db=0)
@@ -26,7 +26,7 @@ def set_redis_bid_ask(partition):
 
 
 class SparkStreamConsumer:
-    def __init__(self, slide_interval=1, window_length=5):
+    def __init__(self, slide_interval=1, window_length=15):
         self.sc = SparkContext(appName='SparkStream', master='spark://ec2-34-235-103-8.compute-1.amazonaws.com:7077')
         self.ssc = StreamingContext(self.sc, slide_interval)
         self.slide_interval = slide_interval
@@ -38,7 +38,7 @@ class SparkStreamConsumer:
 
     def consume_spreads(self, spread_topics):
         self.kvs = KafkaUtils.createDirectStream(self.ssc, spread_topics,
-                                                 {'metadata.broker.list': KAFKA_NODES})
+                                                 {'metadata.broker.list': ','.join(KAFKA_NODES)})
         # messages come in [timestamp, bid, ask] format, a spread is calculated by (ask-bid)
         parsed = self.kvs.window(self.window_length, self.slide_interval).map(lambda v: json.loads(v[1])).cache()
         parsed.foreachRDD(lambda rdd: rdd.foreachPartition(set_redis_bid_ask))
