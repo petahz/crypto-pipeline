@@ -4,6 +4,7 @@ import json
 from requests.exceptions import HTTPError, ConnectionError
 import time
 
+from config.config import KAFKA_NODES
 
 api = API()
 
@@ -16,7 +17,7 @@ class KrakenProducer:
         self.since_time = 0
 
     def produce_confluent(self):
-        p = Producer({'bootstrap.servers': 'localhost'})
+        p = Producer({'bootstrap.servers': ','.join(KAFKA_NODES)})
 
         def delivery_report(err, msg):
             """ Called once for each message produced to indicate delivery result.
