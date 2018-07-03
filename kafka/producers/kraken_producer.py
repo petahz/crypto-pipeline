@@ -1,3 +1,4 @@
+import asyncio
 from confluent_kafka import Producer
 from krakenex import API
 import json
@@ -16,7 +17,7 @@ class KrakenProducer:
         self.interval = interval
         self.since_time = 0
 
-    def produce_confluent(self):
+    async def produce_confluent(self):
         p = Producer({'bootstrap.servers': ','.join(KAFKA_NODES)})
 
         def delivery_report(err, msg):
@@ -34,7 +35,7 @@ class KrakenProducer:
         if self.interval is not None:
             query_params['interval'] = self.interval
         try:
-            response = api.query_public(self.api_method, query_params)
+            response = await api.query_public(self.api_method, query_params)
         except (HTTPError, ConnectionError):
             # If we get an HTTPError, wait 20 seconds and try again
             time.sleep(20)
