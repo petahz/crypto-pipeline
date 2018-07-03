@@ -1,7 +1,7 @@
 from confluent_kafka import Producer
 from krakenex import API
 import json
-from requests.exceptions import HTTPError
+from requests.exceptions import HTTPError, ConnectionError
 import time
 
 
@@ -34,7 +34,7 @@ class KrakenProducer:
             query_params['interval'] = self.interval
         try:
             response = api.query_public(self.api_method, query_params)
-        except HTTPError:
+        except (HTTPError, ConnectionError):
             # If we get an HTTPError, wait 20 seconds and try again
             time.sleep(20)
 
