@@ -32,12 +32,6 @@ export class CoinRow extends React.Component {
         }
     }
 
-    // shouldComponentUpdate(nextProps) {
-    //     const differentBid = this.props.values.bid !== nextProps.values.bid;
-    //     const differentAsk = this.props.values.ask !== nextProps.values.ask;
-    //     return differentBid || differentAsk;
-    // }
-
     render() {
         return (
             <TableRow>

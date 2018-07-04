@@ -14,15 +14,15 @@ r = redis.StrictRedis(host='redis-group.v7ufhi.ng.0001.use1.cache.amazonaws.com'
 
 
 def set_redis_avg_spread(partition):
-    for msg in partition:
-        r.hset(msg[0], 'avg_spread', msg[1])
+    last_msg = partition[-1]
+    r.hset(last_msg[0], 'avg_spread', last_msg[1])
 
 
 def set_redis_bid_ask(partition):
-    for msg in partition:
-        r.hset(msg[3], 'bid', msg[1])
-        r.hset(msg[3], 'ask', msg[2])
-        r.hset(msg[3], 'spread', Decimal(msg[2]) - Decimal(msg[1]))
+    msg = partition[-1]
+    r.hset(msg[3], 'bid', msg[1])
+    r.hset(msg[3], 'ask', msg[2])
+    r.hset(msg[3], 'spread', Decimal(msg[2]) - Decimal(msg[1]))
 
 
 class SparkStreamConsumer:
