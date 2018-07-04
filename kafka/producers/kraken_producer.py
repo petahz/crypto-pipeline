@@ -16,7 +16,7 @@ class KrakenProducer:
         self.interval = interval
         self.since_time = 0
 
-    async def produce_confluent(self):
+    def produce_confluent(self):
         p = Producer({'bootstrap.servers': ','.join(KAFKA_NODES)})
 
         def delivery_report(err, msg):
