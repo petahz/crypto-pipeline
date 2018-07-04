@@ -1,4 +1,3 @@
-import asyncio
 from krakenex import API
 import time
 
@@ -29,8 +28,6 @@ def start_kraken_producer():
 
         while True:
             time.sleep(2)
-            futures = [producer.produce_confluent() for producer in producers]
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(asyncio.wait(futures))
-            # for producer in producers:
-            #     producer.produce_confluent()
+
+            for producer in producers:
+                producer.produce_confluent()
