@@ -14,7 +14,6 @@ import { CoinRow } from '../CoinRow';
 
 export class Home extends React.Component {
     render() {
-        const coinsToShow = ['XXBTZUSD', 'XETHZUSD', 'EOSUSD', 'XLTCZUSD', 'BCHUSD'];
         const mapper = {
             'XXBTZUSD': 'Bitcoin',
             'XETHZUSD': 'Ethereum',
@@ -35,9 +34,9 @@ export class Home extends React.Component {
                     </TableRow>
                 </TableHeader>
                 <TableBody if={this.props.liveData} displayRowCheckbox={false}>
-                    { coinsToShow.map((assetPair, index) => {
+                    { Object.keys(mapper).map((assetPair, index) => {
                         const values = this.props.liveData[assetPair];
-                        if (typeof(mapper[assetPair]) !== 'undefined') {
+                        if (typeof(values) !== 'undefined') {
                             return (<CoinRow key={index} coinName={mapper[assetPair]} values={values}/>)
                         }
                     }) }
