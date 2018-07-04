@@ -49,9 +49,9 @@ class SparkStreamConsumer:
         # input: [timestamp, bid, ask, asset_pair] output: (asset_pair, spread, 1)
         def calculate_spread(tx):
             asset_pair = tx[3]
-            return (asset_pair, Decimal(tx[2]) - Decimal(tx[1]), 1)
+            return (asset_pair, Decimal(tx[2]) - Decimal(tx[1]))
 
-        spread_percentage_dstream = parsed.map(calculate_spread)
+        spread_percentage_dstream = parsed.map(calculate_spread).mapValues(lambda x: (x, 1))
 
         # sum the spreads and the counts per key, output: (asset_pair, total_spread, total_count)
         spread_sum_count_dstream = spread_percentage_dstream.reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1]))
