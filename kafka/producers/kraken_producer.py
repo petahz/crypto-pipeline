@@ -33,11 +33,14 @@ class KrakenProducer:
         }
         if self.interval is not None:
             query_params['interval'] = self.interval
-        try:
-            response = api.query_public(self.api_method, query_params)
-        except (HTTPError, ConnectionError):
-            # If we get an HTTPError, wait 20 seconds and try again
-            time.sleep(20)
+
+        while True:
+            try:
+                response = api.query_public(self.api_method, query_params)
+                break
+            except (HTTPError, ConnectionError):
+                # If we get an HTTPError, wait 20 seconds and try again
+                time.sleep(20)
 
         if len(response['error']) > 0:
             for e in response['error']:
