@@ -15,7 +15,6 @@ export class HomeContainer extends React.Component {
 
         socket.emit('next', {success: true});
         socket.on('liveData', (data) => {
-            console.log('received new data: ', data);
             this.setState({
               liveData: data
             });
