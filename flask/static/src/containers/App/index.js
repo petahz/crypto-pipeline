@@ -16,11 +16,8 @@ const muiTheme = getMuiTheme(lightBaseTheme, {
         accent1Color: blueGrey100,
         accent3Color: blueGrey100,
         alternateTextColor: '#fff',
-        borderColor: blueGrey500,
         canvasColor: grey700,
         primary1Color: blueGrey500,
-        primaryTextColor: blueGrey100,
-        secondaryTextColor: blueGrey100,
     }
 });
 
