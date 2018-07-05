@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {blueGrey100, blueGrey500, grey700} from 'material-ui/styles/colors';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import lightBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -11,7 +11,7 @@ import { Header } from '../../components/Header';
 /* global styles for app */
 import './styles/app.scss';
 
-const muiTheme = getMuiTheme(darkBaseTheme, {
+const muiTheme = getMuiTheme(lightBaseTheme, {
     palette: {
         accent3Color: blueGrey100,
         alternateTextColor: '#fff',
