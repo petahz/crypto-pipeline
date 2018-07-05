@@ -1,6 +1,9 @@
 import React from 'react';
 import openSocket from 'socket.io-client';
 
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+
 /* components */
 import { Home } from '../../components/Home';
 
