@@ -24,13 +24,16 @@ export class HomeContainer extends React.Component {
             socket.emit('next', {success: true});
         });
     }
+
+    handleChange = (event, index, value) => this.setState({value});
+
     render() {
         return (
             <section>
-                <DropDownMenu value={this.state.value} onChange={this.handleChange}>
+                <DropDownMenu value={this.state.exchange} onChange={this.handleChange}>
                   <MenuItem value={'kraken'} primaryText="Kraken" />
                 </DropDownMenu>
-                <DropDownMenu value={this.state.value} onChange={this.handleChange}>
+                <DropDownMenu value={this.state.source_currency} onChange={this.handleChange}>
                   <MenuItem value={'USD'} primaryText="USD" />
                 </DropDownMenu>
                 <Home liveData={this.state.liveData} />
