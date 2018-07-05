@@ -43,7 +43,7 @@ export class CoinRow extends React.Component {
 
         return (
             <TableRow>
-                <TableRowColumn><img src={imgMapper[this.props.coinName]}/> {this.props.coinName}</TableRowColumn>
+                <TableRowColumn><img src={imgMapper[this.props.coinName]}/>&nbsp {this.props.coinName}</TableRowColumn>
                 <TableRowColumn className={changes.bid ? 'flash-update-grey' : ''}>{this.props.values && this.props.values.bid}</TableRowColumn>
                 <TableRowColumn className={changes.ask ? 'flash-update-grey' : ''}>{this.props.values && this.props.values.ask}</TableRowColumn>
                 <TableRowColumn

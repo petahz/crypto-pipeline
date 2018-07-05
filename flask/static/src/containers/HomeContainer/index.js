@@ -11,7 +11,7 @@ const socket = openSocket('http://ec2-54-156-187-154.compute-1.amazonaws.com:500
 export class HomeContainer extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {liveData: {}};
+        this.state = {liveData: {}, exchange: 'kraken', source_currency: 'USD'};
 
         socket.emit('next', {success: true});
         socket.on('liveData', (data) => {
@@ -24,6 +24,12 @@ export class HomeContainer extends React.Component {
     render() {
         return (
             <section>
+                <DropDownMenu value={this.state.value} onChange={this.handleChange}>
+                  <MenuItem value={'kraken'} primaryText="Kraken" />
+                </DropDownMenu>
+                <DropDownMenu value={this.state.value} onChange={this.handleChange}>
+                  <MenuItem value={'USD'} primaryText="USD" />
+                </DropDownMenu>
                 <Home liveData={this.state.liveData} />
             </section>
         );
