@@ -13,8 +13,10 @@ import './styles/app.scss';
 
 const muiTheme = getMuiTheme(lightBaseTheme, {
     palette: {
+        accent1Color: blueGrey100,
         accent3Color: blueGrey100,
         alternateTextColor: '#fff',
+        borderColor: blueGrey100,
         canvasColor: grey700,
         primary1Color: blueGrey500,
     }
