@@ -1,13 +1,13 @@
 from krakenex import API
 import time
 
-from kafka.producers.gdax_producer import GdaxProducer
+# from kafka.producers.gdax_producer import GdaxProducer
 from kafka.producers.kraken_producer import KrakenProducer
 
 
-def start_gdax_producer():
-    wsClient = GdaxProducer()
-    wsClient.start()
+# def start_gdax_producer():
+#     wsClient = GdaxProducer()
+#     wsClient.start()
 
 
 def start_kraken_producer():
