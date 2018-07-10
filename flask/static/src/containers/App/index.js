@@ -19,12 +19,6 @@ const muiTheme = getMuiTheme(lightBaseTheme, {
         canvasColor: grey700,
         primary1Color: blueGrey500,
     },
-    TableRow: {
-        height: 64
-    },
-    TableRowColumn: {
-        height: 64
-    }
 });
 
 class App extends React.Component { // eslint-disable-line react/prefer-stateless-function
