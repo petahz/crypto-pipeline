@@ -26,7 +26,7 @@ def set_redis_bid_ask(partition):
 
 
 class SparkStreamConsumer:
-    def __init__(self, slide_interval=1, window_length=15):
+    def __init__(self, slide_interval=5, window_length=15):
         self.sc = SparkContext(appName='SparkStream', master='spark://ec2-34-235-103-8.compute-1.amazonaws.com:7077')
         self.ssc = StreamingContext(self.sc, slide_interval)
         self.slide_interval = slide_interval
