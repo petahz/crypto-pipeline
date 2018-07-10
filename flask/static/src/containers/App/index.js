@@ -18,6 +18,12 @@ const muiTheme = getMuiTheme(lightBaseTheme, {
         alternateTextColor: '#fff',
         canvasColor: grey700,
         primary1Color: blueGrey500,
+    },
+    TableRow: {
+        height: 64
+    },
+    TableRowColumn: {
+        height: 64
     }
 });
 
