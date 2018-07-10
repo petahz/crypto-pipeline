@@ -17,11 +17,9 @@ export class Home extends React.Component {
         const mapper = {
             'XXBTZUSD': 'Bitcoin',
             'XETHZUSD': 'Ethereum',
-            'XXRPZUSD': 'Ripple',
             'EOSUSD': 'EOS',
             'XLTCZUSD': 'Litecoin',
-            'BCHUSD': 'Bitcoin Cash',
-            'DASHUSD': 'Dash',
+            'XXRPZUSD': 'Ripple XRP',
         };
         
         return (

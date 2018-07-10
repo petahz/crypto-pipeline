@@ -2,7 +2,7 @@ from spark_stream_consumer import SparkStreamConsumer
 
 if __name__ == '__main__':
     # Kraken asset pairs for BTC, ETH, and LTC to USD prices
-    asset_pairs = ['XXBTZUSD', 'XETHZUSD', 'EOSUSD', 'XLTCZUSD', 'BCHUSD', 'DASHUSD', 'XXRPZUSD', 'XETCZUSD']
+    asset_pairs = ['XXBTZUSD', 'XETHZUSD', 'EOSUSD', 'XLTCZUSD', 'XXRPZUSD']
     intervals = [1, 5, 15, 30, 60, 240, 1440, 10080, 21600]
     spread_topics = []
     ohlc_topics = []
