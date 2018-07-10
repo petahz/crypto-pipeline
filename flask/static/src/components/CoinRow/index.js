@@ -39,6 +39,9 @@ export class CoinRow extends React.Component {
             'EOS': 'https://s2.coinmarketcap.com/static/img/coins/16x16/1765.png',
             'Litecoin': 'https://s2.coinmarketcap.com/static/img/coins/16x16/2.png',
             'Bitcoin Cash': 'https://s2.coinmarketcap.com/static/img/coins/16x16/1831.png',
+            'Dash': 'https://s2.coinmarketcap.com/static/img/coins/16x16/131.png',
+            'Ethereum Classic': 'https://s2.coinmarketcap.com/static/img/coins/16x16/1321.png',
+            'Ripple': 'https://s2.coinmarketcap.com/static/img/coins/16x16/52.png'
         };
 
         return (
