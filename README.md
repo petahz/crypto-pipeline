@@ -10,6 +10,7 @@ Other metrics that can be added to the system easily at scale include measures o
 
 ## Pipeline
 The existing pipeline ingests from two data providers, GDAX and Kraken into Kafka where topics are by {exchange}_{metric} and partitions are by coin for parallelized, ordered processing at high throughput. It is consumed for storage in S3 for longer-term historical batch processing, and by Spark Streaming where multiple workers compute a rolling average. This is stored in an Elasticache cluster with Redis replicated to provide quick in-memory read access by the Flask application.
+
 ![First Iteration](docs/pipeline.png "Pipeline")
 
 ### Challenges
@@ -21,4 +22,5 @@ In Spark, we need to ensure efficiency in our transformations. In our MapReduce 
 
 ## Expanded Pipeline
 This is a diagram demonstrating potential expansion to this pipeline. The data in S3 is a source for new feature development for ML models in Spark ML, as well as for longer-term historical processing with Spark SQL Dataframes. A permanent database store such as RDS can be used if we also expect transactional data operations from our Flask app, or Cassandra otherwise for fast high writes.
+
 ![Expanded Pipeline](docs/pipeline_expanded.png "Expanded Pipeline")
