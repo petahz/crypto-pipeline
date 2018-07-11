@@ -24,3 +24,10 @@ In Spark, we need to ensure efficiency in our transformations. In our MapReduce 
 This is a diagram demonstrating potential expansion to this pipeline. The data in S3 is a source for new feature development for ML models in Spark ML, as well as for longer-term historical processing with Spark SQL Dataframes. A permanent database store such as RDS can be used if we also expect transactional data operations from our Flask app, or Cassandra otherwise for fast high writes.
 
 ![Expanded Pipeline](docs/pipeline_expanded.png "Expanded Pipeline")
+
+## Measurements
+
+### Spark Streaming
+In our Spark Streaming micro-batches, we use windowing of 15 seconds with a 5s sliding interval. This produces stable processing times of each job as measured below.
+
+![Spark Streaming UI](docs/spark_benchmarks.png "Spark Streaming Benchmarks")
