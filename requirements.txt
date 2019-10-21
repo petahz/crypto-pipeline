@@ -41,4 +41,4 @@ SQLAlchemy==1.2.8
 tabulate==0.8.2
 urllib3==1.23
 websocket-client==0.40.0
-Werkzeug==0.14.1
+Werkzeug==0.15.3
