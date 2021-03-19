@@ -18,7 +18,7 @@ Flask-SocketIO==3.0.1
 Flask-SQLAlchemy==2.3.2
 idna==2.7
 itsdangerous==0.24
-Jinja2==2.10
+Jinja2==2.11.3
 jmespath==0.9.3
 kazoo==2.5.0
 krakenex==2.1.0
