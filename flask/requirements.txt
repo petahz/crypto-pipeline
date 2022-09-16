@@ -22,7 +22,7 @@ Jinja2==2.10
 jmespath==0.9.3
 kazoo==2.5.0
 krakenex==2.1.0
-Mako==1.0.7
+Mako==1.2.2
 MarkupSafe==1.0
 psycopg2==2.7.5
 pycparser==2.18
